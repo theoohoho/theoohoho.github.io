@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html class="has-navbar-fixed-top">
+<head>
+    <meta charset="utf-8">
+<title>【快速上車 FastAPI，感受開發快感】 - 快速感受 FastAPI - Theoo&#39;s Diary</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/outdated-browser/1.1.5/outdatedbrowser.min.css">
+
+
+
+
+<meta name="description" content="">
+
+
+
+
+
+    <meta name="description" content="Purpose: 快速上手和了解 FastAPI，所以會盡量講解常用到的 API 設定，會避免一些比較深入的設定 此章節主要會從環境安裝開始，簡單走一遍 FastAPI 啟動服務的流程 Outline 環境要求 FastAPI 需要的工具 環境 Setup 建立 Fast instance Execute fastapi web application server  環境要求Python 3.7">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【快速上車 FastAPI，感受開發快感】 - 快速感受 FastAPI">
+<meta property="og:url" content="https://theoohoho.github.io/2021/01/09/fastapi-ch1/index.html">
+<meta property="og:site_name" content="Theoo&#39;s Diary">
+<meta property="og:description" content="Purpose: 快速上手和了解 FastAPI，所以會盡量講解常用到的 API 設定，會避免一些比較深入的設定 此章節主要會從環境安裝開始，簡單走一遍 FastAPI 啟動服務的流程 Outline 環境要求 FastAPI 需要的工具 環境 Setup 建立 Fast instance Execute fastapi web application server  環境要求Python 3.7">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2021-01-09T03:11:50.000Z">
+<meta property="article:modified_time" content="2021-01-09T03:11:50.000Z">
+<meta property="article:author" content="theoohoho">
+<meta property="article:tag" content="FastAPI">
+<meta property="article:tag" content="Python">
+<meta name="twitter:card" content="summary">
+
+
+
+
+
+<link rel="icon" href="/favicon.png">
+
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Ovo|Source+Code+Pro">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bulma/0.6.2/css/bulma.min.css">
+
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/lightgallery/1.6.8/css/lightgallery.min.css">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/justifiedGallery/3.6.5/css/justifiedGallery.min.css">
+
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-dark-reasonable.min.css">
+
+
+<link rel="stylesheet" href="/css/style.css">
+
+
+<script defer src="//use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
+
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    
+
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+<body>
+    
+<nav class="navbar is-transparent is-fixed-top navbar-main" role="navigation" aria-label="main navigation">
+    <div class="container">
+        <div class="navbar-brand">
+            <a class="navbar-item navbar-logo" href="/">
+                
+                    
+                    Theoo&#39;s Diary
+                    
+                
+            </a>
+            <div class="navbar-burger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+        
+        <div class="navbar-menu navbar-start">
+            
+            <a class="navbar-item "
+               href="/archives">Archives</a>
+            
+            <a class="navbar-item "
+               href="/categories">Categories</a>
+            
+            <a class="navbar-item "
+               href="/about">About</a>
+            
+        </div>
+        
+        <div class="navbar-menu navbar-end">
+            
+            <a class="navbar-item search" title="Search" href="javascript:;">
+                <i class="fas fa-search"></i>
+            </a>
+            
+            
+            
+            <a class="navbar-item" title="GitHub" target="_blank" rel="noopener" href="https://github.com/theoohoho">
+                
+                <i class="fab fa-github"></i>
+                
+            </a>
+               
+            
+        </div>
+    </div>
+</nav>
+
+    <section class="section">
+    <div class="container">
+    <article class="article content gallery" itemscope itemprop="blogPost">
+    <h1 class="article-title is-size-3 is-size-4-mobile" itemprop="name">
+        
+            【快速上車 FastAPI，感受開發快感】 - 快速感受 FastAPI
+        
+    </h1>
+    <div class="article-meta columns is-variable is-1 is-multiline is-mobile is-size-7-mobile">
+        <span class="column is-narrow">
+            
+                <time datetime="2021-01-09T03:11:50.000Z" itemprop="datePublished">Jan 9 2021</time>
+            
+        </span>
+        
+        <span class="column is-narrow article-category">
+            <i class="far fa-folder"></i>
+            <a class="article-category-link" href="/categories/Python/">Python</a>
+        </span>
+        
+        
+        <span class="column is-narrow">
+            
+            
+            5 minutes read (About 773 words)
+        </span>
+        
+    </div>
+    <div class="article-entry is-size-6-mobile" itemprop="articleBody">
+    
+        <html><head></head><body><p>Purpose: 快速上手和了解 FastAPI，所以會盡量講解常用到的 API 設定，會避免一些比較深入的設定</p>
+<p>此章節主要會從環境安裝開始，簡單走一遍 FastAPI 啟動服務的流程</p>
+<h2 id="Outline"><a href="#Outline" class="headerlink" title="Outline"></a>Outline</h2><ul>
+<li>環境要求</li>
+<li>FastAPI 需要的工具</li>
+<li>環境 Setup</li>
+<li>建立 Fast instance</li>
+<li>Execute fastapi web application server</li>
+</ul>
+<h2 id="環境要求"><a href="#環境要求" class="headerlink" title="環境要求"></a>環境要求</h2><p>Python 3.7</p>
+<h2 id="FastAPI-需要的工具"><a href="#FastAPI-需要的工具" class="headerlink" title="FastAPI 需要的工具"></a>FastAPI 需要的工具</h2><ul>
+<li>Pydantic</li>
+<li>Uvicorn</li>
+</ul>
+<h2 id="環境-Setup"><a href="#環境-Setup" class="headerlink" title="環境 Setup"></a>環境 Setup</h2><blockquote>
+<p>開始之前，也可以先建立虛擬環境進行開發，可以參考 virtualenv</p>
+</blockquote>
+<ul>
+<li><p>安裝 fastapi 和 uvicorn</p>
+<figure class="highlight bash hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ pip install fastapi</span><br><span class="line">$ pip install uvicorn</span><br></pre></td></tr></tbody></table></figure></li>
+<li><p>如果懶得個別安裝，也可以直接安裝完整工具包</p>
+<figure class="highlight bash hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ pip3 install fastapi[all]</span><br></pre></td></tr></tbody></table></figure></li>
+</ul>
+<blockquote>
+<p>uvicorn 是什麼?</p>
+<blockquote>
+<p>uvicorn 是一個使用 uvloop and httptools 實現 ASGI 的 HTTP Server，而 FastAPI 基於 Startlette 框架建構，以及 Starlette 框架屬於實現 ASGI 的框架，如果需要執行 ASGI Web Application，就得需要有支援 ASGI 的 HTTP Server</p>
+</blockquote>
+<p>詳細可以參考 <a target="_blank" rel="noopener" href="https://www.uvicorn.org/">uvicorn</a></p>
+</blockquote>
+<h2 id="建立-Fast-instance"><a href="#建立-Fast-instance" class="headerlink" title="建立 Fast instance"></a>建立 Fast instance</h2><ul>
+<li><p>在指定目錄內建立一個 <code>main.py</code> 檔案</p>
+  <figure class="highlight bash hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ mkdir fastapi_pratice</span><br></pre></td></tr></tbody></table></figure></li>
+<li><p>建立 FastAPI instance</p>
+  <figure class="highlight python hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment"># import FastAPI module</span></span><br><span class="line"><span class="hljs-keyword">from</span> fastapi <span class="hljs-keyword">import</span> FastAPI</span><br><span class="line"></span><br><span class="line"><span class="hljs-comment"># 建立 FastAPI instance</span></span><br><span class="line">app = FastAPI()</span><br></pre></td></tr></tbody></table></figure></li>
+<li><p>定義一個 GET method 的 api endpoint 及命名 api path</p>
+  <figure class="highlight python hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-meta">@app.get(<span class="hljs-params"><span class="hljs-string">'/'</span></span>)</span></span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">foo</span>():</span></span><br><span class="line">    <span class="hljs-keyword">return</span> <span class="hljs-string">'Hi this is a test.'</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p>  解析上述程式碼:</p>
+<ul>
+<li><code>@app</code> 是一個 path operation decorator，可以指定要執行哪一個 path operation<ul>
+<li>GET: <code>@app.get</code></li>
+<li>POST: <code>@app.post</code></li>
+<li>PUT: <code>@app.put</code></li>
+<li>PATCH: <code>@app.patch</code></li>
+<li>DELETE: <code>@app.delete</code></li>
+</ul>
+</li>
+<li><code>foo()</code> 執行函式，主要描述需要實現的邏輯。在 FastAPI 會把這類函式統一以 <strong>path operation function</strong> 表達</li>
+</ul>
+<p>  所以整段程式碼是在表達，在 <code>foo()</code> 上面套用 <code>@app</code>，主要是告訴 FastAPI <code>foo()</code> 會對應路徑為 <code>'/'</code> api path，當 FastAPI Application Server 收到 HTTP request 為 <code>/</code>時會呼叫 <code>foo()</code></p>
+<blockquote>
+<p>path operation 是什麼?</p>
+</blockquote>
+<blockquote>
+<p>decorator 是什麼?</p>
+</blockquote>
+</li>
+</ul>
+<h2 id="Execute-fastapi-web-application-server"><a href="#Execute-fastapi-web-application-server" class="headerlink" title="Execute fastapi web application server"></a>Execute fastapi web application server</h2><p>當 WEB Application 執行檔時先完成之後，便能執行</p>
+<figure class="highlight bash hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ uvicorn main:app --reload</span><br></pre></td></tr></tbody></table></figure>
+
+<p>解析上述指令:</p>
+<ul>
+<li><code>main</code> 為指定 fastapi 進入點的執行檔案 e.g main.py</li>
+<li><code>app</code> 為指定該執行檔案內，所宣告為 FastAPI instance 的變數，從上述來看我們命名 app variable 為 FastAPI instance</li>
+<li><code>--reload</code> 為指定 uvicorn 每次只要 fastapi 程式碼有任何更動，都需要重新啟動 Server已同步更新更正內容，通常只在進行開發時使用</li>
+</ul>
+<blockquote>
+<p>For example:</p>
+<blockquote>
+<p>我將 fastapi 進入點檔案命名為 <code>app.py</code>，並且在檔案內建立一個 FastAPI instance，並 assign 給命名為 <code>app</code> 的變數，所以當我需要啟動 server 時，就需要輸入 <code>$ uvicorn app:app</code></p>
+</blockquote>
+</blockquote>
+<p>此時前往 <a target="_blank" rel="noopener" href="http://127.0.0.1:8000/docs">http://127.0.0.1:8000/docs</a> 便能看到所產生的 Open API 文件(Swagger)，而 API 文件本身可以進行互動操作，所以未來開發的任何一支 API 如果想要進行手動測試，便可以直接在上面操作</p>
+<p>現在應該大概了解 FastAPI 的使用流程，下一個章節則會介紹如果要實現一個讀取資料的 RESTful API，該知道哪些設定以及定義呢?</p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p>此篇內容參考以下:</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://fastapi.tiangolo.com/tutorial/first-steps/">FastAPI Official - First Step</a></li>
+</ul>
+</body></html>
+    
+    </div>
+    
+    <div class="columns is-variable is-1 is-multiline is-mobile">
+    
+        <span class="column is-narrow"><a class="tag is-light article-tag" href="/tags/FastAPI/">#FastAPI</a></span>
+    
+        <span class="column is-narrow"><a class="tag is-light article-tag" href="/tags/Python/">#Python</a></span>
+    
+    </div>
+    
+    
+    <div class="columns is-mobile is-multiline article-nav">
+        <span class="column is-12-mobile is-half-desktop is-hidden-mobile article-nav-prev">
+            
+        </span>
+        <span class="column is-12-mobile is-half-desktop  article-nav-next">
+            
+            <a href="/2021/01/09/fastapi-ch0/">【快速上車 FastAPI，感受開發快感】 - FastAPI 介紹</a>
+            
+        </span>
+    </div>
+    
+</article>
+
+
+<div class="sharebox">
+    
+<div class="notification is-danger">
+    You need to set <code>install_url</code> to use ShareThis. Please set it in <code>_config.yml</code>.
+</div>
+
+</div>
+
+
+
+<div class="comments">
+    <h3 class="title is-4">Comments</h3>
+    
+<div id="disqus_thread">
+    
+    <div class="notification is-danger">
+        You forgot to set the <code>shortname</code> for Disqus. Please set it in <code>_config.yml</code>.
+    </div>
+    
+    <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+</div>
+
+    </div>
+</section>
+    <footer class="footer">
+    <div class="container">
+        <div class="columns content">
+            <div class="column is-narrow has-text-centered">
+                &copy; 2021 theoohoho&nbsp;
+                Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> & <a
+                        target="_blank" rel="noopener" href="http://github.com/ppoffice/hexo-theme-minos">Minos</a>
+            </div>
+            <div class="column is-hidden-mobile"></div>
+
+            
+            <div class="column is-narrow">
+                <div class="columns is-mobile is-multiline is-centered">
+                
+                    
+                <a class="column is-narrow has-text-black" title="GitHub" target="_blank" rel="noopener" href="https://github.com/theoohoho">
+                    
+                    GitHub
+                    
+                </a>
+                
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</footer>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment-with-locales.min.js"></script>
+
+<!-- test if the browser is outdated -->
+<div id="outdated">
+    <h6>Your browser is out-of-date!</h6>
+    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" target="_blank" rel="noopener" href="http://outdatedbrowser.com/">Update my browser now </a></p>
+    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
+</div>
+<script src="//cdnjs.cloudflare.com/ajax/libs/outdated-browser/1.1.5/outdatedbrowser.min.js"></script>
+<script>
+    $(document).ready(function () {
+        // plugin function, place inside DOM ready function
+        outdatedBrowser({
+            bgColor: '#f25648',
+            color: '#ffffff',
+            lowerThan: 'flex'
+        })
+    });
+</script>
+
+<script>
+    window.FontAwesomeConfig = {
+        searchPseudoElements: true
+    }
+    moment.locale("en-AU");
+</script>
+
+
+    
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+<script>
+    MathJax.Hub.Config({
+        "HTML-CSS": {
+            matchFontHeight: false
+        },
+        SVG: {
+            matchFontHeight: false
+        },
+        CommonHTML: {
+            matchFontHeight: false
+        },
+        tex2jax: {
+            inlineMath: [
+                ['$','$'],
+                ['\\(','\\)']
+            ]
+        }
+    });
+</script>
+
+    
+    
+    
+    
+<script src="//cdnjs.cloudflare.com/ajax/libs/lightgallery/1.6.8/js/lightgallery-all.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/justifiedGallery/3.6.5/js/jquery.justifiedGallery.min.js"></script>
+<script>
+    (function ($) {
+        $(document).ready(function () {
+            if (typeof($.fn.lightGallery) === 'function') {
+                $('.article.gallery').lightGallery({ selector: '.gallery-item' });
+            }
+            if (typeof($.fn.justifiedGallery) === 'function') {
+                $('.justified-gallery').justifiedGallery();
+            }
+        });
+    })(jQuery);
+</script>
+
+    
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.0/clipboard.min.js"></script>
+    <style>
+        .hljs {
+            position: relative;
+        }
+
+        .hljs .clipboard-btn {
+            float: right;
+            color: #9a9a9a;
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+
+        .hljs .clipboard-btn:hover {
+          color: #8a8a8a;
+        }
+
+        .hljs > .clipboard-btn {
+            display: none;
+            position: absolute;
+            right: 4px;
+            top: 4px;
+        }
+
+        .hljs:hover > .clipboard-btn {
+            display: inline;
+        }
+
+        .hljs > figcaption > .clipboard-btn {
+            margin-right: 4px;
+        }
+    </style>
+    <script>
+      $(document).ready(function () {
+        $('figure.hljs').each(function(i, figure) {
+          var codeId = 'code-' + i;
+          var code = figure.querySelector('.code');
+          var copyButton = $('<button>Copy <i class="far fa-clipboard"></i></button>');
+          code.id = codeId;
+          copyButton.addClass('clipboard-btn');
+          copyButton.attr('data-clipboard-target-id', codeId);
+
+          var figcaption = figure.querySelector('figcaption');
+
+          if (figcaption) {
+            figcaption.append(copyButton[0]);
+          } else {
+            figure.prepend(copyButton[0]);
+          }
+        })
+
+        var clipboard = new ClipboardJS('.clipboard-btn', {
+          target: function(trigger) {
+            return document.getElementById(trigger.getAttribute('data-clipboard-target-id'));
+          }
+        });
+        clipboard.on('success', function(e) {
+          e.clearSelection();
+        })
+      })
+    </script>
+
+    
+    
+
+    
+
+
+
+<script src="/js/script.js"></script>
+
+
+    
+    <div class="searchbox ins-search">
+    <div class="searchbox-mask"></div>
+    <div class="searchbox-container ins-search-container">
+        <div class="searchbox-input-wrapper">
+            <input type="text" class="searchbox-input ins-search-input" placeholder="Type something..." />
+            <span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="searchbox-result-wrapper ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+    (function (window) {
+        var INSIGHT_CONFIG = {
+            TRANSLATION: {
+                POSTS: 'Posts',
+                PAGES: 'Pages',
+                CATEGORIES: 'Categories',
+                TAGS: 'Tags',
+                UNTITLED: '(Untitled)',
+            },
+            CONTENT_URL: '/content.json',
+        };
+        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+    })(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+    
+</body>
+</html>
