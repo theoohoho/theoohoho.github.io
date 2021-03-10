@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html class="has-navbar-fixed-top">
+<head>
+    <meta charset="utf-8">
+<title>【快速上車 FastAPI，感受開發快感】- 定義 Request Body 和 Pydantic model - Theoo&#39;s Diary</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/outdated-browser/1.1.5/outdatedbrowser.min.css">
+
+
+
+
+<meta name="description" content="">
+
+
+
+
+
+    <meta name="description" content="從上一個章節【定義 Path parameter 和 Query Parameter】已經大致了解，FastAPI 如何實現一個讀取資料的 API，以及定義 API 需要的 Path parameter 和 Query Parameter 接下來這一章節的目的，則會介紹如何實現以新增資料為目的的 API，以及可以進行的設定 Outline Request body 是什麼? Pydantic 定義">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【快速上車 FastAPI，感受開發快感】- 定義 Request Body 和 Pydantic model">
+<meta property="og:url" content="https://theoohoho.github.io/2021/01/13/fastapi-ch3/index.html">
+<meta property="og:site_name" content="Theoo&#39;s Diary">
+<meta property="og:description" content="從上一個章節【定義 Path parameter 和 Query Parameter】已經大致了解，FastAPI 如何實現一個讀取資料的 API，以及定義 API 需要的 Path parameter 和 Query Parameter 接下來這一章節的目的，則會介紹如何實現以新增資料為目的的 API，以及可以進行的設定 Outline Request body 是什麼? Pydantic 定義">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2021-01-13T13:17:42.000Z">
+<meta property="article:modified_time" content="2021-01-13T13:17:42.000Z">
+<meta property="article:author" content="theoohoho">
+<meta property="article:tag" content="FastAPI">
+<meta property="article:tag" content="Python">
+<meta property="article:tag" content="Framework">
+<meta name="twitter:card" content="summary">
+
+
+
+
+
+<link rel="icon" href="/favicon.png">
+
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Ovo|Source+Code+Pro">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bulma/0.6.2/css/bulma.min.css">
+
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/lightgallery/1.6.8/css/lightgallery.min.css">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/justifiedGallery/3.6.5/css/justifiedGallery.min.css">
+
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-dark.min.css">
+
+
+<link rel="stylesheet" href="/css/style.css">
+
+
+<script defer src="//use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
+
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    
+
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+<body>
+    
+<nav class="navbar is-transparent is-fixed-top navbar-main" role="navigation" aria-label="main navigation">
+    <div class="container">
+        <div class="navbar-brand">
+            <a class="navbar-item navbar-logo" href="/">
+                
+                    
+                    Theoo&#39;s Diary
+                    
+                
+            </a>
+            <div class="navbar-burger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+        
+        <div class="navbar-menu navbar-start">
+            
+            <a class="navbar-item "
+               href="/archives">Archives</a>
+            
+            <a class="navbar-item "
+               href="/categories">Categories</a>
+            
+            <a class="navbar-item "
+               href="/about">About</a>
+            
+        </div>
+        
+        <div class="navbar-menu navbar-end">
+            
+            <a class="navbar-item search" title="Search" href="javascript:;">
+                <i class="fas fa-search"></i>
+            </a>
+            
+            
+            
+            <a class="navbar-item" title="GitHub" target="_blank" rel="noopener" href="https://github.com/theoohoho">
+                
+                <i class="fab fa-github"></i>
+                
+            </a>
+               
+            
+        </div>
+    </div>
+</nav>
+
+    <section class="section">
+    <div class="container">
+    <article class="article content gallery" itemscope itemprop="blogPost">
+    <h1 class="article-title is-size-3 is-size-4-mobile" itemprop="name">
+        
+            【快速上車 FastAPI，感受開發快感】- 定義 Request Body 和 Pydantic model
+        
+    </h1>
+    <div class="article-meta columns is-variable is-1 is-multiline is-mobile is-size-7-mobile">
+        <span class="column is-narrow">
+            
+                <time datetime="2021-01-13T13:17:42.000Z" itemprop="datePublished">Jan 13 2021</time>
+            
+        </span>
+        
+        <span class="column is-narrow article-category">
+            <i class="far fa-folder"></i>
+            <a class="article-category-link" href="/categories/Python/">Python</a>
+        </span>
+        
+        
+        <span class="column is-narrow">
+            
+            
+            16 minutes read (About 2433 words)
+        </span>
+        
+    </div>
+    <div class="article-entry is-size-6-mobile" itemprop="articleBody">
+    
+        <html><head></head><body><p>從上一個章節【<strong>定義 Path parameter 和 Query Parameter</strong>】已經大致了解，FastAPI 如何實現一個讀取資料的 API，以及定義 API 需要的 Path parameter 和 Query Parameter</p>
+<p>接下來這一章節的目的，則會介紹如何實現以新增資料為目的的 API，以及可以進行的設定</p>
+<h2 id="Outline"><a href="#Outline" class="headerlink" title="Outline"></a>Outline</h2><ul>
+<li>Request body 是什麼?</li>
+<li>Pydantic</li>
+<li>定義資料格式</li>
+<li>預先定義 request body</li>
+<li>定義新增資料的 API</li>
+<li>實作新增資料邏輯</li>
+<li>啟動 HTTP Server</li>
+<li>Reference</li>
+<li>進階用法<ul>
+<li>function argument 混和宣告不同的 parameter</li>
+<li><code>Body</code> module 設定</li>
+</ul>
+</li>
+</ul>
+<h2 id="Request-body-是什麼"><a href="#Request-body-是什麼" class="headerlink" title="Request body 是什麼?"></a>Request body 是什麼?</h2><p>大致上來說 HTTP API，都只是定義一個 Request可以怎麼發送資料給 HTTP Server，不管是 HTTP GET、POST、PUT、PATCH、DELETE method 都是一樣的行為</p>
+<p>只是 HTTP 有規範不同 HTTP Method 有不同的使用目的，在使用目的不同的前提下，某些對應 HTTP method的 request 不應該加入特定的參數，因為這樣違反規範 e.g GET Method 的 request 就被規範不應該加入 request body/payload</p>
+<blockquote>
+<p>GET v.s POST<br>很常見的面試題目，測試面試者對於 HTTP 的熟悉度<br>兩者可以發送資料給 HTTP Server，主要差異在於，POST method 可以將資料放在 request body，而 GET method 在 HTTP 的規範中表示加入 request body，則沒有支援 request body<br>所以當使用者需要發送私人資料或是不需要公開的資料時，使用 HTTP POST method 的 request 是比較適當的方式<br>因為當 Backend 的 WEB Server 有支援 HTTPS protocol時，request body 內的資料可以被加密保護<br>當 request 發送到網路上，轉換成封包資料飛來飛去的時候，已經是加密過的封包，使用者便不用擔心剛剛傳輸的資料會被人偷窺</p>
+</blockquote>
+<p>而 request body 通常會在 HTTP POST method 的 request中使用，主要就是將資料放到 request body並發送給相對應的 API</p>
+<p>request body 支援許多資料格式，大部分都是以 JSON 為主要資料格式進行傳輸</p>
+<p>而在 FastAPI 中，會使用 Pydantic 來定義 Server 接收到 request之後， request body 所需要攜帶的參數</p>
+<p>透過 Pydantic 的特性，來進行資料驗證及型別轉化</p>
+<h2 id="Pydantic"><a href="#Pydantic" class="headerlink" title="Pydantic"></a>Pydantic</h2><blockquote>
+<p>Pydantic 介紹、支援功能、應用在哪些地方</p>
+</blockquote>
+<p>FastAPI 主要使用 Pydantic 建立 Request body model，當 api server 收到 request之後，會自動轉換為對應的 model</p>
+<blockquote>
+<p>Pydantic 的一個特點是，強制在 runtime 時使用 type hint，並且在 data invalid時提供明確清楚的錯誤回報，告訴開發者哪邊出了錯誤<br>Pydantic 使用 python type annotations 做到 data validation and settings management</p>
+</blockquote>
+<p>今天想要實作一個新增書本資料的 API，整個流程會是</p>
+<ol>
+<li>定義書本資料格式</li>
+<li>以書本資料格式來定義 request body 可以接收的資料內容</li>
+<li>定義新增資料的 API</li>
+<li>實作新增資料邏輯</li>
+</ol>
+<h2 id="定義資料格式"><a href="#定義資料格式" class="headerlink" title="定義資料格式"></a>定義資料格式</h2><p>這邊將使用 Pydantic 來定義資料格式</p>
+<figure class="highlight python hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment"># 1. Import pydantic</span></span><br><span class="line"><span class="hljs-keyword">from</span> pydantic <span class="hljs-keyword">import</span> BaseModel</span><br><span class="line"></span><br><span class="line"><span class="hljs-comment"># 2. 建立 data model</span></span><br><span class="line"><span class="hljs-comment"># 透過宣告 class 並繼承 Pydantic BaseModel，變可以實作一個 data model</span></span><br><span class="line"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Book</span>(<span class="hljs-params">BaseModel</span>):</span></span><br><span class="line">    book_id: <span class="hljs-built_in">str</span></span><br><span class="line">    book_name: <span class="hljs-built_in">str</span></span><br><span class="line">    book_price: <span class="hljs-built_in">int</span></span><br><span class="line">    book_type: <span class="hljs-built_in">str</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p>Pydantic model 定義的 attribute 沒有設定 default value，就會是 required，如果不給予 value會回報錯誤</p>
+<p>下面是一個以 Pydantic 定義的 JSON object(aka Python dict)，以 <code>Book</code> 為範例</p>
+<figure class="highlight json hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">{</span><br><span class="line">    <span class="hljs-attr">"book_id"</span>: '',</span><br><span class="line">    <span class="hljs-attr">"book_name"</span>: '',</span><br><span class="line">    <span class="hljs-attr">"book_price"</span>: <span class="hljs-number">0</span>,</span><br><span class="line">    <span class="hljs-attr">"book_type"</span>: '',</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p>如果想要某些參數是 optional，也就是不一定要設定參數的話，可以透過 python 內建模組 <strong>typing</strong> 使用 <code>Optional</code> 或 <code>Union</code></p>
+<blockquote>
+<p>關於 Optional 和 Union 的差別可以從 official doc 來了解<br><a target="_blank" rel="noopener" href="https://docs.python.org/3/library/typing.html#typing.Union">Python3 - typing</a></p>
+</blockquote>
+<figure class="highlight python hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">from</span> typing <span class="hljs-keyword">import</span> Optional, Union</span><br><span class="line"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Book</span>(<span class="hljs-params">BaseModel</span>):</span></span><br><span class="line">    book_id: <span class="hljs-built_in">str</span></span><br><span class="line">    book_name: <span class="hljs-built_in">str</span></span><br><span class="line">    book_price: <span class="hljs-built_in">int</span></span><br><span class="line">    book_type: Optional[<span class="hljs-built_in">str</span>] <span class="hljs-comment"># 預設值為 None</span></span><br></pre></td></tr></tbody></table></figure>
+
+<h2 id="預先定義-request-body"><a href="#預先定義-request-body" class="headerlink" title="預先定義 request body"></a>預先定義 request body</h2><p>定義好書本資料的完整格式之後，可以先思考如果使用者要新增一本書，有需要自行設定所有資料並放到 request body嗎?</p>
+<p>因為像是 <code>book_id</code> 這類 ID 的資料，應該由系統透過一些 <code>uuid</code> 模組或是加密模組自動產生資料會比較適當</p>
+<p>所以針對這類型的資料參數，不希望放進 request body 的情況，Pydantic 的 data model 也可以透過物件繼承 inheritance 的方式來組合不同 data model</p>
+<p>另一個好處是，可以減少定義相同的資料參數</p>
+<ul>
+<li><p>拆解前的資料格式</p>
+<figure class="highlight python hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment"># 這是一開始定義的資料格式</span></span><br><span class="line"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Book</span>(<span class="hljs-params">BaseModel</span>):</span></span><br><span class="line">    book_id: <span class="hljs-built_in">str</span></span><br><span class="line">    book_name: <span class="hljs-built_in">str</span></span><br><span class="line">    book_price: <span class="hljs-built_in">int</span></span><br><span class="line">    book_type: <span class="hljs-built_in">str</span></span><br></pre></td></tr></tbody></table></figure></li>
+<li><p>透過 Pydantic 的特性，將這些定義好的 data model，以物件繼承的方式，組合深層結構的 data model</p>
+<figure class="highlight python hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">BookBase</span>(<span class="hljs-params">BaseModel</span>):</span></span><br><span class="line">    <span class="hljs-string">"""通用的書本資料 model"""</span></span><br><span class="line">    book_name: <span class="hljs-built_in">str</span></span><br><span class="line">    book_price: <span class="hljs-built_in">int</span></span><br><span class="line">    book_type: <span class="hljs-built_in">str</span></span><br><span class="line"></span><br><span class="line"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">BookInfo</span>(<span class="hljs-params">BookBase</span>):</span></span><br><span class="line">    <span class="hljs-string">"""完整的書本資料 model"""</span></span><br><span class="line">    book_id: <span class="hljs-built_in">str</span></span><br><span class="line"></span><br><span class="line"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">NewBook</span>(<span class="hljs-params">BookBase</span>):</span></span><br><span class="line">    <span class="hljs-string">"""提供給新增書本 API的 request body"""</span></span><br><span class="line">    <span class="hljs-keyword">pass</span></span><br></pre></td></tr></tbody></table></figure></li>
+</ul>
+<h2 id="定義新增資料的-API"><a href="#定義新增資料的-API" class="headerlink" title="定義新增資料的 API"></a>定義新增資料的 API</h2><p>定義好書本資料以及提供新增資料 API可使用在 request body 的 data model之後，便可以開始定義 API</p>
+<figure class="highlight python hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-meta">@app.post(<span class="hljs-params"><span class="hljs-string">'/books'</span></span>)</span></span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">create_book</span>(<span class="hljs-params">new_book: NewBook</span>):</span></span><br><span class="line">    <span class="hljs-keyword">pass</span></span><br></pre></td></tr></tbody></table></figure>
+
+<h4 id="解析程式碼"><a href="#解析程式碼" class="headerlink" title="解析程式碼"></a>解析程式碼</h4><ul>
+<li><code>@app.post('/books')</code>: 定義 path operation 為 POST，並命名路徑為 <code>/books</code>，因為 HTTP method 不同，所以 request是可以明確呼叫 GET 或 POST 的，不會受到相同路徑影響</li>
+<li><code>def create_book(new_book: NewBook)</code>: 在 chapter 3有提到 path operation function 的 argument 如果沒有出現在 api route 上，會被視為 query parameter，不過 FastAPI 在 path operation function 會判斷如果 argument 為 Pydantic model，則會被自動視為 request body</li>
+<li><code>pass</code>: 暫時不實現邏輯，下一個 section 會介紹</li>
+</ul>
+<blockquote>
+<p>針對在 function 內加入多個可以作為 Request body 的 argument，請參考下面的 <strong>進階用法-function argument 混和宣告不同的 parameter</strong></p>
+</blockquote>
+<blockquote>
+<p>如果是針對如何在 path operation 加入單獨一個 request body attribute，請參考下面的 <strong>進階用法-<code>Body</code> module 設定</strong></p>
+</blockquote>
+<h2 id="實作新增資料邏輯"><a href="#實作新增資料邏輯" class="headerlink" title="實作新增資料邏輯"></a>實作新增資料邏輯</h2><figure class="highlight python hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">import</span> uuid</span><br><span class="line"><span class="hljs-meta">@app.post(<span class="hljs-params"><span class="hljs-string">'/books'</span></span>)</span></span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">create_book</span>(<span class="hljs-params">new_book: NewBook</span>) -&gt; BookInfo:</span></span><br><span class="line">    <span class="hljs-keyword">return</span> BookInfo(**new_book.<span class="hljs-built_in">dict</span>(), book_id=uuid.uuid4())</span><br></pre></td></tr></tbody></table></figure>
+
+<h4 id="解釋程式碼"><a href="#解釋程式碼" class="headerlink" title="解釋程式碼:"></a>解釋程式碼:</h4><ul>
+<li><code>import uuid</code>: import 內建模組 uuid，自動產生獨立的字串</li>
+<li><code>def create_book(new_book: NewBook) -&gt; BookInfo</code>: 定義 API 輸出的資料格式為 BookInfo，OpenAPI 會自動產生對應的資料模型</li>
+<li><code>new_book.dict()</code>: 是 Pydantic 內建支援的方法，可以將 Pydantic model 轉成 dict type</li>
+<li><code>BookInfo(**new_book.dict(), book_id=uuid.uuid4())</code>: 是將轉換成 <code>dict</code> type的 <code>new_book</code> 參數，以 keyword argument 傳送進 <code>BookInfo</code> Pydantic model，並只保留 attribute 相符合的資料，在 FastAPI 中會很常使用這個方法</li>
+</ul>
+<blockquote>
+<p>關於 dict() 資料轉化的說明可以參考 <a target="_blank" rel="noopener" href="https://fastapi.tiangolo.com/tutorial/extra-models/#about-user_indict">FastAPI - Extra models</a></p>
+</blockquote>
+<h2 id="啟動-HTTP-Server"><a href="#啟動-HTTP-Server" class="headerlink" title="啟動 HTTP Server"></a>啟動 HTTP Server</h2><p>執行</p>
+<blockquote>
+<p>這邊貼上 API 文件產生的 OpenAPI schema<br><img src=""></p>
+</blockquote>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://fastapi.tiangolo.com/tutorial/body/#create-your-data-model">FastAPI- Request Body</a></li>
+<li><a target="_blank" rel="noopener" href="https://fastapi.tiangolo.com/tutorial/extra-models/#about-user_indict">FastAPI - Extra Model</a></li>
+</ul>
+<h2 id="進階用法"><a href="#進階用法" class="headerlink" title="進階用法"></a>進階用法</h2><h3 id="function-argument-混和宣告不同的-parameter"><a href="#function-argument-混和宣告不同的-parameter" class="headerlink" title="function argument 混和宣告不同的 parameter"></a>function argument 混和宣告不同的 parameter</h3><ul>
+<li>Path parameter 和 Request Body  <figure class="highlight python hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment"># FastAPI 會自動匹配 function parameter 和 path parameter，並從 path parameter 取得 value pass給 function argument</span></span><br><span class="line"><span class="hljs-meta">@app.put(<span class="hljs-params"><span class="hljs-string">'/user/{user_id}'</span></span>)</span></span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">update_user</span>(<span class="hljs-params">user_id: <span class="hljs-built_in">str</span>, updated_user: UserInfo</span>):</span></span><br><span class="line">    <span class="hljs-keyword">return</span> updated_user</span><br></pre></td></tr></tbody></table></figure></li>
+</ul>
+<blockquote>
+<p>針對 query paramter, path parameter, request body 這三種類型的 function parameter，FastAPI 一樣可以自動判斷<br>path parameter 透過與 path 匹配來判斷<br>query parameter 只要 parameter name 沒有定義在 path，以及型別沒有宣告為 Pydantic model<br>request body 只要 parameter 宣告為 Pydantic model</p>
+</blockquote>
+<ul>
+<li>多個宣告為 Request body的 parameter  <figure class="highlight python hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-meta">@app.post(<span class="hljs-params"><span class="hljs-string">'/book'</span></span>)</span></span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">create_book</span>(<span class="hljs-params">user_info: UserInfo, new_book: Book</span>):</span></span><br><span class="line">    <span class="hljs-keyword">return</span> new_book</span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li>預期的 request body 如下<figure class="highlight json hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">{</span><br><span class="line">    <span class="hljs-attr">"user_info"</span>: {</span><br><span class="line">        <span class="hljs-attr">"username"</span>: <span class="hljs-string">""</span>,</span><br><span class="line">        <span class="hljs-attr">"email"</span>: <span class="hljs-string">""</span>,</span><br><span class="line">        <span class="hljs-attr">"phone"</span>: <span class="hljs-number">0</span></span><br><span class="line">    },</span><br><span class="line">    <span class="hljs-attr">"book"</span>: {</span><br><span class="line">        <span class="hljs-attr">"name"</span>: <span class="hljs-string">""</span>,</span><br><span class="line">        <span class="hljs-attr">"type"</span>: <span class="hljs-string">""</span>,</span><br><span class="line">        <span class="hljs-attr">"price"</span>: <span class="hljs-number">0</span></span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure></li>
+</ul>
+</li>
+</ul>
+<h3 id="Body-module-設定"><a href="#Body-module-設定" class="headerlink" title="Body module 設定"></a><code>Body</code> module 設定</h3><p>FAST API 提供 <code>Body</code> module，可以指定 function argument 為 request body 的參數，並設定額外的 metadata or validation</p>
+<p>而 Body 的應用場景有兩種:</p>
+<ol>
+<li>可以提供 request body 額外 metadata 和 validation</li>
+<li>可以宣告額外/單獨的 request body 參數 (通常會在 request body 只有一兩個參數，不想要另外定義 Pydantic model 時使用)</li>
+</ol>
+<ul>
+<li>下面是宣告單獨 request body 參數的範例  <figure class="highlight python hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment"># 原本 user_info 內宣告的參數全部集中在 body attribute user_info，形成巢狀結構，並且在 request body 第一層加上新的 attribute</span></span><br><span class="line"><span class="hljs-comment"># Body(...) 第一個 argument 為設定預設值，如果不需要設定預設值直接 asigne 三個小數點就行</span></span><br><span class="line"><span class="hljs-meta">@app.post(<span class="hljs-params"><span class="hljs-string">'/user/set'</span></span>)</span></span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">set_user</span>(<span class="hljs-params">user_info: UserInfo, activate: <span class="hljs-built_in">bool</span> = Body(<span class="hljs-params">...</span>)</span>):</span></span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li>預期的 request body 如下<figure class="highlight json hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">{</span><br><span class="line">    <span class="hljs-attr">"user_info"</span>: {</span><br><span class="line">        <span class="hljs-attr">"username"</span>: <span class="hljs-string">""</span>,</span><br><span class="line">        <span class="hljs-attr">"email"</span>: <span class="hljs-string">""</span>,</span><br><span class="line">        <span class="hljs-attr">"phone"</span>: <span class="hljs-number">0</span></span><br><span class="line">    },</span><br><span class="line">    <span class="hljs-attr">"activate"</span>: False</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure></li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>注意: 如果沒有帶入 <code>Body</code> module 的話，FastAPI 會把這個參數視為 query parameter</p>
+</blockquote>
+<p>另外如果 API 只需要設定單獨一個 request body attribute 的話，建議可以特別在 <code>Body</code> 內加入 <code>embed=True</code> 這個屬性</p>
+<p>否則 FastAPI 在 OpenAPI 上看這隻 API時，會發現 request body 內沒有提供 attribute name，只有呈現數值，給我們填入而已</p>
+<ul>
+<li><code>Body</code>沒有加入<code>embed=True</code>的範例  <figure class="highlight python hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-meta">@app.post(<span class="hljs-params"><span class="hljs-string">'/test'</span></span>)</span></span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">test</span>(<span class="hljs-params">activate: <span class="hljs-built_in">bool</span> = Body(<span class="hljs-params">...</span>)</span>):</span></span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li>OpenAPI 上看到的 request body，只能夠填入數值，不是 json 格式<figure class="highlight hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">true</span><br></pre></td></tr></tbody></table></figure></li>
+</ul>
+</li>
+<li><code>Body</code>有加入<code>embed=True</code>的範例  <figure class="highlight python hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-meta">@app.post(<span class="hljs-params"><span class="hljs-string">'/test'</span></span>)</span></span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">test</span>(<span class="hljs-params">activate: <span class="hljs-built_in">bool</span> = Body(<span class="hljs-params">..., embed=<span class="hljs-literal">True</span></span>)</span>):</span></span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li>OpenAPI 上看到的 request body<figure class="highlight json hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">{<span class="hljs-attr">"activate"</span>: <span class="hljs-literal">true</span>}</span><br></pre></td></tr></tbody></table></figure></li>
+</ul>
+</li>
+</ul>
+<p>不過針對 function 有多個宣告為 Body 的 argument 而言，便不會有這類狀況出現</p>
+<figure class="highlight python hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-meta">@app.post(<span class="hljs-params"><span class="hljs-string">'/test'</span></span>)</span></span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">test</span>(<span class="hljs-params">user_name: <span class="hljs-built_in">str</span> = Body(<span class="hljs-params">...</span>), activate: <span class="hljs-built_in">bool</span> = Body(<span class="hljs-params">...</span>)</span>):</span></span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li>OpenAPI 上看到的 request body<figure class="highlight json hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">{<span class="hljs-attr">"user_name"</span>:'', <span class="hljs-attr">"activate"</span>: <span class="hljs-literal">true</span>}</span><br></pre></td></tr></tbody></table></figure></li>
+</ul>
+<p>另外一個會使用到 <code>embed</code> 的情況是，希望單獨宣告 Pydantic model 的 argument，也可以在 request body 內明確指定 function argument name</p>
+<figure class="highlight python hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-meta">@app.post(<span class="hljs-params"><span class="hljs-string">'/test'</span></span>)</span></span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">test</span>(<span class="hljs-params">user_info: UserInfo = Body(<span class="hljs-params">..., embed=<span class="hljs-literal">True</span></span>)</span>):</span></span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li>OpenAPI 上看到的 request body<figure class="highlight json hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">{<span class="hljs-attr">"user_info"</span>: {<span class="hljs-attr">"username"</span>: <span class="hljs-string">""</span>, <span class="hljs-attr">"email"</span>: <span class="hljs-string">""</span>,<span class="hljs-attr">"phone"</span>: <span class="hljs-number">0</span>}}</span><br></pre></td></tr></tbody></table></figure></li>
+</ul>
+</body></html>
+    
+    </div>
+    
+    <div class="columns is-variable is-1 is-multiline is-mobile">
+    
+        <span class="column is-narrow"><a class="tag is-light article-tag" href="/tags/FastAPI/">#FastAPI</a></span>
+    
+        <span class="column is-narrow"><a class="tag is-light article-tag" href="/tags/Python/">#Python</a></span>
+    
+        <span class="column is-narrow"><a class="tag is-light article-tag" href="/tags/Framework/">#Framework</a></span>
+    
+    </div>
+    
+    
+    <div class="columns is-mobile is-multiline article-nav">
+        <span class="column is-12-mobile is-half-desktop  article-nav-prev">
+            
+            <a href="/2021/01/16/fastapi-ch4/">【快速上車 FastAPI，感受開發快感】 - 定義 Response 和 Exception</a>
+            
+        </span>
+        <span class="column is-12-mobile is-half-desktop  article-nav-next">
+            
+            <a href="/2021/01/10/fastapi-ch2/">【快速上車 FastAPI，感受開發快感】 - 定義 Path parameter 和 Query Parameter</a>
+            
+        </span>
+    </div>
+    
+</article>
+
+
+<div class="sharebox">
+    
+<div class="notification is-danger">
+    You need to set <code>install_url</code> to use ShareThis. Please set it in <code>_config.yml</code>.
+</div>
+
+</div>
+
+
+
+<div class="comments">
+    <h3 class="title is-4">Comments</h3>
+    
+<div id="disqus_thread">
+    
+    <div class="notification is-danger">
+        You forgot to set the <code>shortname</code> for Disqus. Please set it in <code>_config.yml</code>.
+    </div>
+    
+    <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+</div>
+
+    </div>
+</section>
+    <footer class="footer">
+    <div class="container">
+        <div class="columns content">
+            <div class="column is-narrow has-text-centered">
+                &copy; 2021 theoohoho&nbsp;
+                Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> & <a
+                        target="_blank" rel="noopener" href="http://github.com/ppoffice/hexo-theme-minos">Minos</a>
+            </div>
+            <div class="column is-hidden-mobile"></div>
+
+            
+            <div class="column is-narrow">
+                <div class="columns is-mobile is-multiline is-centered">
+                
+                    
+                <a class="column is-narrow has-text-black" title="GitHub" target="_blank" rel="noopener" href="https://github.com/theoohoho">
+                    
+                    GitHub
+                    
+                </a>
+                
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</footer>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment-with-locales.min.js"></script>
+
+<!-- test if the browser is outdated -->
+<div id="outdated">
+    <h6>Your browser is out-of-date!</h6>
+    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" target="_blank" rel="noopener" href="http://outdatedbrowser.com/">Update my browser now </a></p>
+    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
+</div>
+<script src="//cdnjs.cloudflare.com/ajax/libs/outdated-browser/1.1.5/outdatedbrowser.min.js"></script>
+<script>
+    $(document).ready(function () {
+        // plugin function, place inside DOM ready function
+        outdatedBrowser({
+            bgColor: '#f25648',
+            color: '#ffffff',
+            lowerThan: 'flex'
+        })
+    });
+</script>
+
+<script>
+    window.FontAwesomeConfig = {
+        searchPseudoElements: true
+    }
+    moment.locale("en-AU");
+</script>
+
+
+    
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+<script>
+    MathJax.Hub.Config({
+        "HTML-CSS": {
+            matchFontHeight: false
+        },
+        SVG: {
+            matchFontHeight: false
+        },
+        CommonHTML: {
+            matchFontHeight: false
+        },
+        tex2jax: {
+            inlineMath: [
+                ['$','$'],
+                ['\\(','\\)']
+            ]
+        }
+    });
+</script>
+
+    
+    
+    
+    
+<script src="//cdnjs.cloudflare.com/ajax/libs/lightgallery/1.6.8/js/lightgallery-all.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/justifiedGallery/3.6.5/js/jquery.justifiedGallery.min.js"></script>
+<script>
+    (function ($) {
+        $(document).ready(function () {
+            if (typeof($.fn.lightGallery) === 'function') {
+                $('.article.gallery').lightGallery({ selector: '.gallery-item' });
+            }
+            if (typeof($.fn.justifiedGallery) === 'function') {
+                $('.justified-gallery').justifiedGallery();
+            }
+        });
+    })(jQuery);
+</script>
+
+    
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.0/clipboard.min.js"></script>
+    <style>
+        .hljs {
+            position: relative;
+        }
+
+        .hljs .clipboard-btn {
+            float: right;
+            color: #9a9a9a;
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+
+        .hljs .clipboard-btn:hover {
+          color: #8a8a8a;
+        }
+
+        .hljs > .clipboard-btn {
+            display: none;
+            position: absolute;
+            right: 4px;
+            top: 4px;
+        }
+
+        .hljs:hover > .clipboard-btn {
+            display: inline;
+        }
+
+        .hljs > figcaption > .clipboard-btn {
+            margin-right: 4px;
+        }
+    </style>
+    <script>
+      $(document).ready(function () {
+        $('figure.hljs').each(function(i, figure) {
+          var codeId = 'code-' + i;
+          var code = figure.querySelector('.code');
+          var copyButton = $('<button>Copy <i class="far fa-clipboard"></i></button>');
+          code.id = codeId;
+          copyButton.addClass('clipboard-btn');
+          copyButton.attr('data-clipboard-target-id', codeId);
+
+          var figcaption = figure.querySelector('figcaption');
+
+          if (figcaption) {
+            figcaption.append(copyButton[0]);
+          } else {
+            figure.prepend(copyButton[0]);
+          }
+        })
+
+        var clipboard = new ClipboardJS('.clipboard-btn', {
+          target: function(trigger) {
+            return document.getElementById(trigger.getAttribute('data-clipboard-target-id'));
+          }
+        });
+        clipboard.on('success', function(e) {
+          e.clearSelection();
+        })
+      })
+    </script>
+
+    
+    
+
+    
+
+
+
+<script src="/js/script.js"></script>
+
+
+    
+    <div class="searchbox ins-search">
+    <div class="searchbox-mask"></div>
+    <div class="searchbox-container ins-search-container">
+        <div class="searchbox-input-wrapper">
+            <input type="text" class="searchbox-input ins-search-input" placeholder="Type something..." />
+            <span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="searchbox-result-wrapper ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+    (function (window) {
+        var INSIGHT_CONFIG = {
+            TRANSLATION: {
+                POSTS: 'Posts',
+                PAGES: 'Pages',
+                CATEGORIES: 'Categories',
+                TAGS: 'Tags',
+                UNTITLED: '(Untitled)',
+            },
+            CONTENT_URL: '/content.json',
+        };
+        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+    })(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+    
+</body>
+</html>
