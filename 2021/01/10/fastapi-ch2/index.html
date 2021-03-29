@@ -145,7 +145,7 @@
         <span class="column is-narrow">
             
             
-            15 minutes read (About 2196 words)
+            15 minutes read (About 2237 words)
         </span>
         
     </div>
@@ -153,7 +153,7 @@
     
         <html><head></head><body><p>從上一章已經大致了解，FastAPI 如何建立 fastAPI instance，以及定義一個簡單的 api router 之後，啟動 uvicorn server 來使用 FastAPI 所產生的 OpenAPI 文件，並進行 API 操作</p>
 <p>接下來這一章節的目的，會介紹如何設計一個讀取資料的 API，以及該進行哪些設定及定義</p>
-<h2 id="Outline"><a href="#Outline" class="headerlink" title="Outline"></a>Outline</h2><p>前面兩個章節會簡單介紹 API 和 REST 概念， 後面兩個章節會介紹 Query parameter 和 Path parameter，最後是設計一隻 HTTP GET method 的 Restful API</p>
+<h2 id="Outline"><a href="#Outline" class="headerlink" title="Outline"></a>Outline</h2><p>前面兩個章節會簡單介紹 API 和 REST 概念， 後面兩個章節會介紹 Query parameter 和 Path parameter，最後是設計一支 HTTP GET method 的 Restful API</p>
 <ul>
 <li>API 是什麼?</li>
 <li>RESTful 是什麼?</li>
@@ -173,9 +173,15 @@
 <p>如果是要讀取所有資源，並且希望能夠進行排序、筆數限制等操作，則可以透過帶入 query parameter</p>
 <blockquote>
 <p>Path parameter 是什麼?</p>
+<blockquote>
+<p>可以作為 URL一部分的變數，通常會應用在指定路徑的 URI</p>
+</blockquote>
 </blockquote>
 <blockquote>
 <p>Query parameter 是什麼?</p>
+<blockquote>
+<p>通常會放在 URL 最後面，並且以 <code>?</code>區隔開來</p>
+</blockquote>
 </blockquote>
 <p>假設現在有個情境，要做一間書店，書店需要提供很多書籍資料，也需要提供一本書的詳細資訊，所以起碼要有兩隻 API 來提供這兩個功能，如下</p>
 <ul>
@@ -239,7 +245,8 @@
 <p>理解到這個階段之後，相信讀者們應該知道如何在 FastAPI 宣告一個讀取資料的 API，並且可以根據 API 目的，定義 API 的 path/query parameter</p>
 <p>下一個章節，將會介紹如何實現一隻以新增資料為目的的 API</p>
 <p>最後，針對 Path parameter 和 Query parameter，FastAPI 還提供了一些進階設定，其中包括可以規範這兩個 parameter 的長度限制、別名、加入 regex…，如果有興趣的讀者可以繼續往 <strong>進階用法</strong>章節了解</p>
-<h2 id="進階用法"><a href="#進階用法" class="headerlink" title="進階用法"></a>進階用法</h2><p><a target="_blank" rel="noopener" href="https://fastapi.tiangolo.com/tutorial/path-params/#predefined-values">待補充 - predefined path parameter</a><br><a target="_blank" rel="noopener" href="https://fastapi.tiangolo.com/tutorial/query-params-str-validations/">待補充 - query parameter and string validation</a></p>
+<h2 id="進階用法"><a href="#進階用法" class="headerlink" title="進階用法"></a>進階用法</h2><p><a target="_blank" rel="noopener" href="https://fastapi.tiangolo.com/tutorial/path-params/#predefined-values">待補充 - predefined path parameter</a></p>
+<p><a target="_blank" rel="noopener" href="https://fastapi.tiangolo.com/tutorial/query-params-str-validations/">待補充 - query parameter and string validation</a></p>
 <p>如果需要針對 path parameter or query parameter 增加 metadata or type validation 的話，FAST API支援 import 各自的 module來實現<br>metatdata 比如有:</p>
 <ol>
 <li><code>title</code></li>

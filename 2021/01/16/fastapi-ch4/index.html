@@ -145,7 +145,7 @@
         <span class="column is-narrow">
             
             
-            9 minutes read (About 1283 words)
+            9 minutes read (About 1286 words)
         </span>
         
     </div>
@@ -187,11 +187,15 @@
 </blockquote>
 <h2 id="Exception"><a href="#Exception" class="headerlink" title="Exception"></a>Exception</h2><blockquote>
 <p>什麼是有益的 Exception?</p>
-<p>而回應錯誤訊息中，訊息內容能不能夠準確描述錯誤原因，以及透過狀態碼讓 Client 更快速了解錯誤類別，便是有益的 Exception</p>
+<blockquote>
+<p>在回應錯誤訊息中，訊息內容能不能夠準確描述錯誤原因，以及透過狀態碼讓 Client 更快速了解錯誤類別，便是有益的 Exception</p>
+</blockquote>
 </blockquote>
 <p>FastAPI 提供 <code>HTTPException</code> 來 raise 錯誤</p>
 <blockquote>
-<p>FastAPI 的 <code>HTTPException</code> 有個特點是直接繼承 Python 的 <code>Exception</code>，所以可以用 <code>raise</code> 拋出錯誤<br>透過使用 raise 的其中一個好處，當我們建立通用方法，提供給 path operation 時，也可以在通用方法邏輯內，直接 raise exception中斷程式繼續執行。<br>這一個特點，對於在 FastAPI 使用 Dependencies 或是 Security 設定時，會很有幫助。 另一個用 raise 的好處，當然就是寫法很直覺明確</p>
+<p>FastAPI 的 <code>HTTPException</code> 有個特點是直接繼承 Python 的 <code>Exception</code>，所以可以用 <code>raise</code> 拋出錯誤</p>
+<p>透過使用 raise 的其中一個好處，當我們建立通用方法，提供給 path operation 時，也可以在通用方法邏輯內，直接 raise exception中斷程式繼續執行。</p>
+<p>這一個特點，對於在 FastAPI 使用 Dependencies 或是 Security 設定時，會很有幫助。 另一個用 raise 的好處，當然就是寫法很直覺明確</p>
 </blockquote>
 <p>以下是一般使用 HTTPException 範例</p>
 <figure class="highlight python hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment"># 1. 先 imoprt fastapi.HTTPException</span></span><br><span class="line"><span class="hljs-keyword">from</span> fastapi <span class="hljs-keyword">import</span> HTTPException</span><br><span class="line"></span><br><span class="line"><span class="hljs-comment"># detail 主要放置錯誤回傳訊息，可以接收 str, list, dict 這些類型的資料</span></span><br><span class="line"><span class="hljs-comment"># 這些資料最後會由 FastAPI 自動轉換為 JSON</span></span><br><span class="line"><span class="hljs-meta">@app.get(<span class="hljs-params"><span class="hljs-string">'/test'</span></span>)</span></span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">test</span>():</span></span><br><span class="line">    <span class="hljs-keyword">raise</span> HTTPException(</span><br><span class="line">        status_code=<span class="hljs-number">404</span>,</span><br><span class="line">        detail=<span class="hljs-string">'Something not found'</span>,</span><br><span class="line">        headers={<span class="hljs-string">'header_field'</span>: <span class="hljs-string">'header_value'</span>}</span><br><span class="line">    )</span><br></pre></td></tr></tbody></table></figure>
@@ -208,7 +212,9 @@
 
 <p>或者是以覆蓋的方式來調整 FastAPI 預設 HTTPException 的資料格式或行為</p>
 <blockquote>
-<p>這邊比較特別的是，如果想要覆蓋 HTTPException，官方文件建議直接覆蓋 Starlette 的 HTTPException<br>因為 FastAPI 基於 Starlette 建構框架，許多 WEB request/response 處理都是直接繼承 Starlette 的 module<br>所以透過直接修改 Starlette Exception，這樣便能夠一起調整 Starlette 內同樣繼承或使用 Starlette HTTPException 的程式碼/extension/plug-ins</p>
+<p>這邊比較特別的是，如果想要覆蓋 HTTPException，官方文件建議直接覆蓋 Starlette 的 HTTPException</p>
+<p>因為 FastAPI 基於 Starlette 建構框架，許多 WEB request/response 處理都是直接繼承 Starlette 的 module</p>
+<p>所以透過直接修改 Starlette Exception，這樣便能夠一起調整 Starlette 內同樣繼承或使用 Starlette HTTPException 的程式碼/extension/plug-ins</p>
 </blockquote>
 <figure class="highlight python hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">from</span> fastapi <span class="hljs-keyword">import</span> Request</span><br><span class="line"><span class="hljs-keyword">from</span> fastapi.responses <span class="hljs-keyword">import</span> PlainTextResponse</span><br><span class="line"><span class="hljs-keyword">from</span> starlette.exceptions <span class="hljs-keyword">import</span> HTTPException <span class="hljs-keyword">as</span> StarletteHTTPException</span><br><span class="line"></span><br><span class="line"><span class="hljs-meta">@app.custom_exception_handler(<span class="hljs-params">StarletteHTTPException</span>)</span></span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">http_exception_handler</span>(<span class="hljs-params">request, exc</span>):</span></span><br><span class="line">    print(<span class="hljs-string">'Hey I got http error!'</span>, exc)</span><br><span class="line">    <span class="hljs-keyword">return</span> PlainTextResponse(<span class="hljs-built_in">str</span>(exc.detail), status_code=exc.status_code)</span><br></pre></td></tr></tbody></table></figure>
 
@@ -216,8 +222,9 @@
 <ul>
 <li><a target="_blank" rel="noopener" href="https://fastapi.tiangolo.com/tutorial/response-model/">FastAPI - Response Model</a></li>
 <li><a target="_blank" rel="noopener" href="https://fastapi.tiangolo.com/tutorial/response-status-code/">FastAPI - Response Status code</a></li>
-<li><a target="_blank" rel="noopener" href="https://fastapi.tiangolo.com/tutorial/handling-errors/">FastAPI - Handling Errors</a><h2 id="進階用法"><a href="#進階用法" class="headerlink" title="進階用法"></a>進階用法</h2></li>
+<li><a target="_blank" rel="noopener" href="https://fastapi.tiangolo.com/tutorial/handling-errors/">FastAPI - Handling Errors</a></li>
 </ul>
+<h2 id="進階用法"><a href="#進階用法" class="headerlink" title="進階用法"></a>進階用法</h2><p>待補充</p>
 </body></html>
     
     </div>

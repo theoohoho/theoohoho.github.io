@@ -144,7 +144,7 @@
         <span class="column is-narrow">
             
             
-            7 minutes read (About 1107 words)
+            7 minutes read (About 1112 words)
         </span>
         
     </div>
@@ -172,13 +172,22 @@
 <li><strong>fast to code</strong>: FastAPI 沒有太多框架提供的特殊語法，大多使用 Python 內建語法及模組，減少額外學習成本；另一方面，FastAPI 在模組使用及程式碼描述上也很 intuitive直覺，開發者可以很快速熟悉框架</li>
 </ul>
 <p>另外，FastAPI 完全基於 Python 3.6 版本開發，可以使用許多 Python 3.6 新加入的功能: f-string、type hint</p>
+<blockquote>
+<p>ASGI 是什麼?</p>
+<blockquote>
+<p>ASGI (Asynchronous Server Gateway Interface) is a spiritual successor to WSGI, intended to provide a standard interface between async-capable Python web servers, frameworks, and applications.</p>
+</blockquote>
+<blockquote>
+<p>ASGI 全名為 Asynchronous Server Gateway Interface，just a little difference with WSGI (Web Server Gateway Interface)，可以在具有 async 功能的 Python web servers、frameworks、applications 之間提供 standard interface</p>
+</blockquote>
+</blockquote>
 <h2 id="FastAPI-特色"><a href="#FastAPI-特色" class="headerlink" title="FastAPI 特色"></a>FastAPI 特色</h2><p>FastAPI 的作者研究許多知名的開源專案，獲取各個開源工具的優點及設計哲學，經過徹底研究之後，才開發出 FastAPI 框架</p>
 <p>以下是 FastAPI 主要特色:</p>
 <ul>
 <li>FastAPI 完全基於 Python 3.6 版本開發，只支援 Python 3.6 以上的版本</li>
 <li>FastAPI 整個框架遵循 Open standard 設計，可以自動產生 Open API 規格的 API 文件 e.g Swagger</li>
 <li>FastAPI 基於 Starlette 建構，負責處理 Web gateway interface，包括 API path、</li>
-<li>FastAPI 基於 Pydantic 建購，負責處理資料輸入/輸出的型別驗證及轉換，使用範圍包括 Database model</li>
+<li>FastAPI 基於 Pydantic 建購，負責處理資料輸入/輸出的型別驗證及轉換，可以應用在專案環境變數管理</li>
 </ul>
 <blockquote>
 <p>Open Standard?</p>
@@ -192,15 +201,6 @@
 <p>Starlette 是一個 lightweight ASGI framework/toolkit 適合建立 high performance asyncio service，需要搭配 ASGI server 使用 e.g uvicorn</p>
 </blockquote>
 <p>詳細可以參考 <a target="_blank" rel="noopener" href="https://www.starlette.io/">Starlette</a></p>
-</blockquote>
-<blockquote>
-<p>ASGI 是什麼?</p>
-<blockquote>
-<p>ASGI (Asynchronous Server Gateway Interface) is a spiritual successor to WSGI, intended to provide a standard interface between async-capable Python web servers, frameworks, and applications.</p>
-</blockquote>
-<blockquote>
-<p>ASGI 全名為 Asynchronous Server Gateway Interface，just a little difference with WSGI (Web Server Gateway Interface)，可以在具有 async 功能的 Python web servers、frameworks、applications 之間提供 standard interface</p>
-</blockquote>
 </blockquote>
 <blockquote>
 <p>uvicorn 是什麼?</p>

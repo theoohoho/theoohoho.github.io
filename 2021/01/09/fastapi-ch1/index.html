@@ -144,7 +144,7 @@
         <span class="column is-narrow">
             
             
-            5 minutes read (About 773 words)
+            5 minutes read (About 823 words)
         </span>
         
     </div>
@@ -180,17 +180,17 @@
 </blockquote>
 <p>詳細可以參考 <a target="_blank" rel="noopener" href="https://www.uvicorn.org/">uvicorn</a></p>
 </blockquote>
-<h2 id="建立-Fast-instance"><a href="#建立-Fast-instance" class="headerlink" title="建立 Fast instance"></a>建立 Fast instance</h2><ul>
+<h2 id="建立-FastAPI-instance"><a href="#建立-FastAPI-instance" class="headerlink" title="建立 FastAPI instance"></a>建立 FastAPI instance</h2><ul>
 <li><p>在指定目錄內建立一個 <code>main.py</code> 檔案</p>
   <figure class="highlight bash hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ mkdir fastapi_pratice</span><br></pre></td></tr></tbody></table></figure></li>
-<li><p>建立 FastAPI instance</p>
+<li><p>編輯 <code>main.py</code>，並建立 FastAPI instance</p>
   <figure class="highlight python hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment"># import FastAPI module</span></span><br><span class="line"><span class="hljs-keyword">from</span> fastapi <span class="hljs-keyword">import</span> FastAPI</span><br><span class="line"></span><br><span class="line"><span class="hljs-comment"># 建立 FastAPI instance</span></span><br><span class="line">app = FastAPI()</span><br></pre></td></tr></tbody></table></figure></li>
 <li><p>定義一個 GET method 的 api endpoint 及命名 api path</p>
   <figure class="highlight python hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-meta">@app.get(<span class="hljs-params"><span class="hljs-string">'/'</span></span>)</span></span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">foo</span>():</span></span><br><span class="line">    <span class="hljs-keyword">return</span> <span class="hljs-string">'Hi this is a test.'</span></span><br></pre></td></tr></tbody></table></figure>
 
 <p>  解析上述程式碼:</p>
 <ul>
-<li><code>@app</code> 是一個 path operation decorator，可以指定要執行哪一個 path operation<ul>
+<li><code>@app</code> 是一個 path operation decorator，可以指定要執行哪一種 path operation<ul>
 <li>GET: <code>@app.get</code></li>
 <li>POST: <code>@app.post</code></li>
 <li>PUT: <code>@app.put</code></li>
@@ -198,18 +198,24 @@
 <li>DELETE: <code>@app.delete</code></li>
 </ul>
 </li>
-<li><code>foo()</code> 執行函式，主要描述需要實現的邏輯。在 FastAPI 會把這類函式統一以 <strong>path operation function</strong> 表達</li>
+<li><code>foo()</code> 執行函式，主要描述需要實現的邏輯。在 FastAPI 會把這類函式統稱為 <strong>path operation function</strong></li>
 </ul>
-<p>  所以整段程式碼是在表達，在 <code>foo()</code> 上面套用 <code>@app</code>，主要是告訴 FastAPI <code>foo()</code> 會對應路徑為 <code>'/'</code> api path，當 FastAPI Application Server 收到 HTTP request 為 <code>/</code>時會呼叫 <code>foo()</code></p>
+<p>  所以整段程式碼是在表達，在 <code>foo()</code> 上面套用 <code>@app</code>，主要是告訴 FastAPI <code>foo()</code> 會對應路徑為 <code>'/'</code> api path，當 FastAPI Application Server 收到 HTTP request 的路徑為為 <code>/</code>時會呼叫 <code>foo()</code></p>
 <blockquote>
 <p>path operation 是什麼?</p>
+<blockquote>
+<p>可以視為 HTTP method</p>
+</blockquote>
 </blockquote>
 <blockquote>
 <p>decorator 是什麼?</p>
+<blockquote>
+<p>裝飾器，是 python 提供的語法，可以把 function 獨立套用到任一 function，以實現裝飾器設計模式的效果</p>
+</blockquote>
 </blockquote>
 </li>
 </ul>
-<h2 id="Execute-fastapi-web-application-server"><a href="#Execute-fastapi-web-application-server" class="headerlink" title="Execute fastapi web application server"></a>Execute fastapi web application server</h2><p>當 WEB Application 執行檔時先完成之後，便能執行</p>
+<h2 id="Execute-fastapi-web-application-server"><a href="#Execute-fastapi-web-application-server" class="headerlink" title="Execute fastapi web application server"></a>Execute fastapi web application server</h2><p>當 WEB Application 執行檔完成之後，便能執行</p>
 <figure class="highlight bash hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ uvicorn main:app --reload</span><br></pre></td></tr></tbody></table></figure>
 
 <p>解析上述指令:</p>

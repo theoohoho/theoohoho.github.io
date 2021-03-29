@@ -145,7 +145,7 @@
         <span class="column is-narrow">
             
             
-            16 minutes read (About 2433 words)
+            16 minutes read (About 2427 words)
         </span>
         
     </div>
@@ -171,7 +171,12 @@
 <h2 id="Request-body-是什麼"><a href="#Request-body-是什麼" class="headerlink" title="Request body 是什麼?"></a>Request body 是什麼?</h2><p>大致上來說 HTTP API，都只是定義一個 Request可以怎麼發送資料給 HTTP Server，不管是 HTTP GET、POST、PUT、PATCH、DELETE method 都是一樣的行為</p>
 <p>只是 HTTP 有規範不同 HTTP Method 有不同的使用目的，在使用目的不同的前提下，某些對應 HTTP method的 request 不應該加入特定的參數，因為這樣違反規範 e.g GET Method 的 request 就被規範不應該加入 request body/payload</p>
 <blockquote>
-<p>GET v.s POST<br>很常見的面試題目，測試面試者對於 HTTP 的熟悉度<br>兩者可以發送資料給 HTTP Server，主要差異在於，POST method 可以將資料放在 request body，而 GET method 在 HTTP 的規範中表示加入 request body，則沒有支援 request body<br>所以當使用者需要發送私人資料或是不需要公開的資料時，使用 HTTP POST method 的 request 是比較適當的方式<br>因為當 Backend 的 WEB Server 有支援 HTTPS protocol時，request body 內的資料可以被加密保護<br>當 request 發送到網路上，轉換成封包資料飛來飛去的時候，已經是加密過的封包，使用者便不用擔心剛剛傳輸的資料會被人偷窺</p>
+<p>GET v.s POST</p>
+<p>很常見的面試題目，測試面試者對於 HTTP 的熟悉度</p>
+<blockquote>
+<p>兩者可以發送資料給 HTTP Server，主要差異在於，POST method 可以將資料放在 request body，而 GET method 在 HTTP 的規範中表示加入 request body，則沒有支援 request body</p>
+<p>所以當使用者需要發送私人資料或是不需要公開的資料時，使用 HTTP POST method 的 request 是比較適當的方式，因為當 Backend 的 WEB Server 有支援 HTTPS protocol時，request body 內的資料可以被加密保護，當 request 發送到網路上，轉換成封包資料飛來飛去的時候，已經是加密過的封包，使用者便不用擔心剛剛傳輸的資料會被人偷窺</p>
+</blockquote>
 </blockquote>
 <p>而 request body 通常會在 HTTP POST method 的 request中使用，主要就是將資料放到 request body並發送給相對應的 API</p>
 <p>request body 支援許多資料格式，大部分都是以 JSON 為主要資料格式進行傳輸</p>
@@ -182,7 +187,8 @@
 </blockquote>
 <p>FastAPI 主要使用 Pydantic 建立 Request body model，當 api server 收到 request之後，會自動轉換為對應的 model</p>
 <blockquote>
-<p>Pydantic 的一個特點是，強制在 runtime 時使用 type hint，並且在 data invalid時提供明確清楚的錯誤回報，告訴開發者哪邊出了錯誤<br>Pydantic 使用 python type annotations 做到 data validation and settings management</p>
+<p>Pydantic 的一個特點是，強制在 runtime 時使用 type hint，並且在 data invalid時提供明確清楚的錯誤回報，告訴開發者哪邊出了錯誤</p>
+<p>Pydantic 使用 python type annotations 做到 data validation and settings management</p>
 </blockquote>
 <p>今天想要實作一個新增書本資料的 API，整個流程會是</p>
 <ol>
@@ -240,9 +246,8 @@
 <p>關於 dict() 資料轉化的說明可以參考 <a target="_blank" rel="noopener" href="https://fastapi.tiangolo.com/tutorial/extra-models/#about-user_indict">FastAPI - Extra models</a></p>
 </blockquote>
 <h2 id="啟動-HTTP-Server"><a href="#啟動-HTTP-Server" class="headerlink" title="啟動 HTTP Server"></a>啟動 HTTP Server</h2><p>執行</p>
-<blockquote>
-<p>這邊貼上 API 文件產生的 OpenAPI schema<br><img src=""></p>
-</blockquote>
+<figure class="highlight bash hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ uvicorn main:app</span><br></pre></td></tr></tbody></table></figure>
+
 <h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><ul>
 <li><a target="_blank" rel="noopener" href="https://fastapi.tiangolo.com/tutorial/body/#create-your-data-model">FastAPI- Request Body</a></li>
 <li><a target="_blank" rel="noopener" href="https://fastapi.tiangolo.com/tutorial/extra-models/#about-user_indict">FastAPI - Extra Model</a></li>
