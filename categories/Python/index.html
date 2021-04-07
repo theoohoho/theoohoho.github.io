@@ -127,6 +127,56 @@
         <article class="article content gallery" itemscope itemprop="blogPost">
     <h1 class="article-title is-size-3 is-size-4-mobile" itemprop="name">
         
+            <a href="/2021/04/07/rq-ch1/" itemprop="url">RQ(Redis Queue) - 一個簡單實現 task queue 的好選擇</a>
+        
+    </h1>
+    <div class="article-meta columns is-variable is-1 is-multiline is-mobile is-size-7-mobile">
+        <span class="column is-narrow">
+            
+                <time datetime="2021-04-07T12:04:25.000Z" itemprop="datePublished">Apr 7 2021</time>
+            
+        </span>
+        
+        <span class="column is-narrow article-category">
+            <i class="far fa-folder"></i>
+            <a class="article-category-link" href="/categories/Python/">Python</a>
+        </span>
+        
+        
+        <span class="column is-narrow">
+            
+            
+            12 minutes read (About 1798 words)
+        </span>
+        
+    </div>
+    <div class="article-entry is-size-6-mobile" itemprop="articleBody">
+    
+        <html><head></head><body><h2 id="What-is-RQ"><a href="#What-is-RQ" class="headerlink" title="What is RQ?"></a>What is RQ?</h2><blockquote>
+<p>RQ (Redis Queue) is a simple Python library for queueing jobs and processing them in the background with workers.</p>
+</blockquote>
+<p>RQ (aka Redis Queue) 是一個 python library，可以實現 Task Queue 服務架構中處理 enqueueing job 和定義 worker for process job in background</p>
+<p>RQ 主要搭配 Redis 使用(如其名)，以 Redis 作為 Message Broker，目的是想要用更簡單、使用門檻更低的方式來實現 Task Queue，對於單純只想要有一個 light-weight 的 Task Queue 來實現非同步處理工作的情境來說，RQ 是一個不錯的 library</p>
+<blockquote>
+<p>除了 RQ 之外，在 Python 生態圈裡，主流的 background task 工具，大多會選擇 Celery</p>
+</blockquote>
+<p>在寫這篇文章的時候，RQ 已經累積了 7.6K 星星，可以前往<a target="_blank" rel="noopener" href="https://github.com/rq/rq">Github查看</a> </p></body></html>
+        <p class="article-more-link">
+            <a href="/2021/04/07/rq-ch1/#more">Read More</a>
+        </p>
+    
+    </div>
+    
+    
+</article>
+
+
+
+
+    
+        <article class="article content gallery" itemscope itemprop="blogPost">
+    <h1 class="article-title is-size-3 is-size-4-mobile" itemprop="name">
+        
             <a href="/2021/01/20/fastapi-ch5/" itemprop="url">【快速上車 FastAPI，感受開發快感】 - 資料庫連線及操作</a>
         
     </h1>
@@ -146,7 +196,7 @@
         <span class="column is-narrow">
             
             
-            28 minutes read (About 4176 words)
+            28 minutes read (About 4177 words)
         </span>
         
     </div>
@@ -170,189 +220,10 @@
 </ul>
 </li>
 <li>Reference</li>
-<li>進階用法</li>
-</ul>
-<h2 id="FastAPI-and-SQLAlchemy"><a href="#FastAPI-and-SQLAlchemy" class="headerlink" title="FastAPI and SQLAlchemy"></a>FastAPI and SQLAlchemy</h2><p>FastAPI 主要使用 SQLAlchemy ORM 來進行 database connection 及操作，所以基本上 database 這部分的處理都是以 SQLAlchemy 標準操作為主</p>
-<blockquote>
-<p>SQLAlchemy ORM 可以支援許多 RDBMS e.g PostgreSQL、MySQL、SQLite、Oracle、MS SQL Server<br>可以參考 <a target="_blank" rel="noopener" href="https://www.sqlalchemy.org/">SQLAlchemy</a></p>
-</blockquote>
-<blockquote>
-<p>甚麼是 ORM?</p>
-<blockquote>
-<p>ORM 全名叫做 Object relational mapping，可以將程式語言建立的 object 和 database table 進行 mapping</p>
-</blockquote>
-<p>白話一點就是將物件資料轉化成 database table，所以一個物件資料如果視為 database table的話</p>
-<p>比如說:</p>
-<blockquote>
-<p>物件本身代表一個 table，物件內的 attribute 代表 table field/column 有包含名稱及資料型別，物件內的 attribute value 代表 table row</p>
-</blockquote>
-<p>以 class 來解釋的話</p>
-<blockquote>
-<p>一個 class 為一個 table e.g <code>class Car</code>，class 內定義的 attribute 為 table 的 field/column e.g <code>Car.name</code>，以 class 實現的 instance 為 table row e.g <code>car_A = Car()</code></p>
-</blockquote>
-<p>所以當指定 class.attribute時，ORM 會幫開發者進行 relation mapping 找到對應的 Table 及 column 來取得數值，又或是 class.attribute = value，進行修正 row 資料的操作，ORM 也可以幫我們找到對應的 ROW 進行調整</p>
-<p>以上內容均參考自 <a target="_blank" rel="noopener" href="https://fastapi.tiangolo.com/tutorial/sql-databases/">FastAPI - SQL (Relational) Databases</a></p>
-</blockquote>
-<h2 id="檔案結構"><a href="#檔案結構" class="headerlink" title="檔案結構"></a>檔案結構</h2><p>根據 FastAPI 對於 Database 操作的檔案結構建議分成:</p>
-<ul>
-<li><code>database.py</code>: 主要定義 database session，處理 database setup 和 connetion</li>
-<li><code>models.py</code>: 主要定義定義可以 mapping to database table 的 ORM model，codebase 這邊會以 model 作為 database table，並對 model 進行 table 操作</li>
-<li><code>schemas.py</code>: 主要定義 Pydantic model，可以針對 ORM model 的資料進行資料驗證/轉化，或者過濾資料</li>
-<li><code>crud.py</code>: 主要定義 ORM model 的資料庫操作行為</li>
-<li><code>main.py</code>: 主要程式進入點，定義之前章節所建立的 API</li>
-</ul>
-<h2 id="Initial-create-SQLAlchemy"><a href="#Initial-create-SQLAlchemy" class="headerlink" title="Initial create SQLAlchemy"></a>Initial create SQLAlchemy</h2><p><a target="_blank" rel="noopener" href="https://fastapi.tiangolo.com/tutorial/sql-databases/#create-the-sqlalchemy-parts">Reference</a></p>
-<blockquote>
-<p>Database Session 是什麼?</p>
-<blockquote>
-<p>In the most general sense, the Session establishes all conversations with the database and represents a “holding zone” for all the objects which you’ve loaded or associated with it during its lifespan.</p>
-</blockquote>
-<p>Session 是建立與 database 的所有連線，並且在 session 生命週期中，database session 會作為所有已載入 object或是關聯 object 的一個 holding zone<br>(白話一點就是，session是一個等待區，可以把已載入物件和關聯物件丟進來)</p>
-<p>想要了解更多關於 SQLAlchemy 針對 Session 的介紹，以及處理可以參考 <a target="_blank" rel="noopener" href="https://docs.sqlalchemy.org/en/13/orm/session_basics.html#session-basics">Reference</a></p>
-</blockquote>
-<p>SQLAlchemy 初始建立 database session流程:</p>
-<ol>
-<li>Edit <code>database.py</code></li>
-<li>Import sqlalchemy packages</li>
-<li>Setup DB URL</li>
-<li>Create an Engine，可以讓 database session 連接資源</li>
-<li>Create a Session as Database Session to interact with DB</li>
-<li>Create Base for later create DB model or ORM model</li>
-<li>Create a get_db_session function to get database session instance</li>
-</ol>
-<p>以兩個 Database configuration 例子來介紹:</p>
-<ul>
-<li>SQLite<figure class="highlight python hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">from</span> sqlalchemy <span class="hljs-keyword">import</span> create_engine</span><br><span class="line"><span class="hljs-keyword">from</span> sqlalchemy.ext.declarative <span class="hljs-keyword">import</span> declarative_base</span><br><span class="line"><span class="hljs-keyword">from</span> sqlalchemy.orm <span class="hljs-keyword">import</span> sessionmaker</span><br><span class="line"></span><br><span class="line">DB_URL = <span class="hljs-string">"sqlite:///./sql_app.db"</span></span><br><span class="line"><span class="hljs-comment"># 只有 sqlite 需要加上 check_same_thread 的 attribute</span></span><br><span class="line"><span class="hljs-comment"># 因為 SQLite 每次只可以接收一個 thread 來處理一個 request</span></span><br><span class="line">Engine = create_engine(SQLALCHEMY_DATABASE_URL, connect_args={<span class="hljs-string">"check_same_thread"</span>: <span class="hljs-literal">False</span>})</span><br><span class="line"><span class="hljs-comment"># 由於 session</span></span><br><span class="line">SessionLocal = sessionmaker(autocommit=<span class="hljs-literal">False</span>, autoflush=<span class="hljs-literal">False</span>, bind=Engine)</span><br><span class="line"><span class="hljs-comment"># 建立 Base，作為後續建立 ORM model 時需要繼承的對象</span></span><br><span class="line">Base = declarative_base()</span><br><span class="line"></span><br><span class="line"><span class="hljs-comment"># 建立 get_db_session() 並實現一個 database session instance and yield it</span></span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_db_session</span>():</span></span><br><span class="line">    db = SessionLocal()</span><br><span class="line">    <span class="hljs-keyword">try</span>:</span><br><span class="line">        <span class="hljs-keyword">yield</span> db</span><br><span class="line">    <span class="hljs-keyword">except</span> Exception:</span><br><span class="line">        db.rollback()</span><br><span class="line">        <span class="hljs-keyword">raise</span></span><br><span class="line">    <span class="hljs-keyword">finally</span>:</span><br><span class="line">        db.close()</span><br></pre></td></tr></tbody></table></figure></li>
-</ul>
-<p>特別解釋一下 <code>get_db_session()</code>，這邊使用了 Generator 的語法</p>
-<ol>
-<li>第一次呼叫 <code>get_db_session()</code> 會先回傳 generator</li>
-<li>第二次使用，會透過 <code>yield</code> 回傳建立好的 session instance</li>
-<li>當 session 拋出去的過程中，遇到錯誤，則會執行 <code>rollback()</code></li>
-<li>最後不管 session 成功執行或遇到錯誤，都會 <code>close()</code> 關閉 session 連線</li>
-</ol>
-<blockquote>
-<p>關於 Genertator 語法的介紹，這邊就不再多描述，可以參考<a target="_blank" rel="noopener" href="https://realpython.com/introduction-to-python-generators/">Real Python的介紹</a></p>
-</blockquote>
-<ul>
-<li>PostgreSQL<figure class="highlight python hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">from</span> sqlalchemy <span class="hljs-keyword">import</span> create_engine</span><br><span class="line"><span class="hljs-keyword">from</span> sqlalchemy.ext.declarative <span class="hljs-keyword">import</span> declarative_base</span><br><span class="line"><span class="hljs-keyword">from</span> sqlalchemy.orm <span class="hljs-keyword">import</span> sessionmaker</span><br><span class="line"></span><br><span class="line">DB_URL = <span class="hljs-string">"postgresql:username:password@db_server/db_name"</span></span><br><span class="line">Engine = create_engine(SQLALCHEMY_DATABASE_URL)</span><br><span class="line">SessionLocal = sessionmaker(autocommit=<span class="hljs-literal">False</span>, autoflush=<span class="hljs-literal">False</span>, bind=Engine)</span><br><span class="line">Base = declarative_base()</span><br><span class="line"></span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_db_session</span>():</span></span><br><span class="line">    db = SessionLocal()</span><br><span class="line">    <span class="hljs-keyword">try</span>:</span><br><span class="line">        <span class="hljs-keyword">yield</span> db</span><br><span class="line">    <span class="hljs-keyword">except</span> Exception:</span><br><span class="line">        db.rollback()</span><br><span class="line">        <span class="hljs-keyword">raise</span></span><br><span class="line">    <span class="hljs-keyword">finally</span>:</span><br><span class="line">        db.close()</span><br></pre></td></tr></tbody></table></figure>
-<h2 id="建立-SQLAlchemy-ORM-model"><a href="#建立-SQLAlchemy-ORM-model" class="headerlink" title="建立 SQLAlchemy ORM model"></a>建立 SQLAlchemy ORM model</h2></li>
-</ul>
-<ol>
-<li>Edit <code>models.py</code></li>
-<li>create class inherit Base from initial create SQLAlchemy</li>
-<li>create model correspond table name</li>
-<li>create attritube/columns</li>
-<li>create relationship</li>
-</ol>
-<blockquote>
-<p>Pydantic model v.s ORM model</p>
-<p>這兩個 model雖然都是用來描述資料模型，但彼此使用目的不同</p>
-<ul>
-<li>Pydantic model 目的在於定義資料格式，實現資料輸入驗證、轉化輸出資料型別</li>
-<li>ORM model 則是定義 database 資料模型，建立 Database connection，並且實現資料庫操作</li>
-</ul>
-</blockquote>
-<figure class="highlight python hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">from</span> sqlalchemy <span class="hljs-keyword">import</span> Boolean, Column, ForeignKey, Integer, String</span><br><span class="line"><span class="hljs-keyword">from</span> .database <span class="hljs-keyword">import</span> Base</span><br><span class="line"></span><br><span class="line"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">User</span>(<span class="hljs-params">Base</span>):</span></span><br><span class="line">    <span class="hljs-comment"># create __tablename__ attribute，宣告 model 對應的 database table name</span></span><br><span class="line">    __tablename__ = <span class="hljs-string">"users"</span></span><br><span class="line">    <span class="hljs-comment"># create class attribute，宣告 model 對應的 table field/column</span></span><br><span class="line">    <span class="hljs-built_in">id</span> = Column(Integer, primary_key=<span class="hljs-literal">True</span>, index=<span class="hljs-literal">True</span>) </span><br><span class="line">    name = Column(String, index=<span class="hljs-literal">True</span>) </span><br><span class="line">    email = Column(String, unique=<span class="hljs-literal">True</span>)</span><br><span class="line">    active = Column(Boolean, default=<span class="hljs-literal">True</span>)</span><br><span class="line">    <span class="hljs-comment"># create relationship 建立 Table 關聯</span></span><br><span class="line">    books = relationship(<span class="hljs-string">"Books"</span>, back_populates=<span class="hljs-string">"owner"</span>)    </span><br><span class="line">    </span><br><span class="line"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Books</span>(<span class="hljs-params">Base</span>):</span></span><br><span class="line">    __tablename__ = <span class="hljs-string">"books"</span></span><br><span class="line">    </span><br><span class="line">    <span class="hljs-built_in">id</span> = Column(Integer, primary_key=<span class="hljs-literal">True</span>, index=<span class="hljs-literal">True</span>)</span><br><span class="line">    title = Column(String, index=<span class="hljs-literal">True</span>)</span><br><span class="line">    description = Column(String)</span><br><span class="line">    price = Column(Integer)</span><br><span class="line">    owner_id = Column(Integer, ForeignKey(<span class="hljs-string">"users.id"</span>))</span><br><span class="line">    <span class="hljs-comment"># create relationship</span></span><br><span class="line">    owner = relationship(<span class="hljs-string">"User"</span>, back_populates=<span class="hljs-string">"books"</span>)</span><br></pre></td></tr></tbody></table></figure>
-
-<p>解釋一下兩個 ORM model <code>Users</code> (users table)和 <code>Books</code>(books table)如何建立關聯</p>
-<p>當兩張 table 建立好關聯之後，假設 database 目前資料狀態是一個 user 有多本書，我們從 database 讀取 user之後抽取一個 <code>Users</code> model (這邊以 <code>my_user</code>表示)，並指定 <code>my_user.books</code>，database 會透過 Foreign key 找到和 <code>Books</code> model 相關聯的資料 row，並回傳和該 user 關聯的所有書本資料 <code>Books</code> model</p>
-<p>而如果從 database 抽取一個 <code>Books</code> model(以 <code>my_book</code> 表示)，並指定 <code>my_book.owner</code><br>便可以取得</p>
-<blockquote>
-<p>更多 SQLAlchemy 定義 ORM model的細節，可以參考<a target="_blank" rel="noopener" href="https://docs.sqlalchemy.org/en/13/orm/tutorial.html">SQLAlchemy official doc</a></p>
-</blockquote>
-<h2 id="建立-Pydantic-model"><a href="#建立-Pydantic-model" class="headerlink" title="建立 Pydantic model"></a>建立 Pydantic model</h2><p>Pydnatic model 目的是可以針對 Table 資料，進行資料驗證或轉換</p>
-<p>通常大部分應用層面的操作，資料都會盡量以 pydantic model 封裝起來，維持嚴謹資料格式，直到要將資料從 database 讀取或是寫入進 database時，才需要使用 ORM model</p>
-<p>所以在定義銜接 orm model 的 pydantic model時，可以先思考哪些情境下會使用到 Pydantic model，以及在該情境下進行資料操作時，有哪些設定可以在 pydantic model 那邊實作，比如:</p>
-<ol>
-<li>新增一個 database table row，希望由系統自動產生 table id 或是時間欄位，所以把產生 id or 產生時間資料的程式碼固定在 pydantic model，讓我每次建立新的 pydantic model 時都可以自動幫我產生資料</li>
-</ol>
-<p>而 Pydantic model 針對 orm model 定義資料格式有幾種選擇:</p>
-<ol>
-<li>可以根據 orm model 照實定義 pydantic model</li>
-<li>也可以將自己認為不必要的資料過濾掉</li>
-</ol>
-<p>以下程式碼需要寫在 <code>schemas.py</code></p>
-<figure class="highlight python hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">from</span> pydantic <span class="hljs-keyword">import</span> BaseModel, Field</span><br><span class="line"><span class="hljs-keyword">from</span> typing <span class="hljs-keyword">import</span> List</span><br><span class="line"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Books</span>(<span class="hljs-params">BaseModel</span>):</span></span><br><span class="line">    <span class="hljs-built_in">id</span>: <span class="hljs-built_in">int</span> = Field(...)</span><br><span class="line">    title: <span class="hljs-built_in">str</span> = Field(...)</span><br><span class="line">    description: <span class="hljs-built_in">str</span> = Field(...)</span><br><span class="line">    price: <span class="hljs-built_in">int</span> = Field(...)</span><br><span class="line">    owner_id: <span class="hljs-built_in">int</span> = Field(...)</span><br><span class="line"></span><br><span class="line"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">User</span>(<span class="hljs-params">BaseModel</span>):</span></span><br><span class="line">    <span class="hljs-built_in">id</span>: <span class="hljs-built_in">int</span> = Field(...)</span><br><span class="line">    name: <span class="hljs-built_in">str</span> = Field(...)</span><br><span class="line">    email: <span class="hljs-built_in">str</span> = Field(...)</span><br><span class="line">    active: <span class="hljs-built_in">bool</span> = Field(...)</span><br><span class="line">    books: List[Books]</span><br></pre></td></tr></tbody></table></figure>
-
-<h3 id="如何進行-Pydantic-model-和-ORM-model-資料搬移"><a href="#如何進行-Pydantic-model-和-ORM-model-資料搬移" class="headerlink" title="如何進行 Pydantic model 和 ORM model 資料搬移?"></a>如何進行 Pydantic model 和 ORM model 資料搬移?</h3><p>現在已經知道 Pydantic model 和 ORM model 的目的，以及如何定義兩個 model</p>
-<p>接下來，這邊將會簡單呈現，如何透過 orm 執行 database query，並將回傳結果的 orm model搬移到 pydantic model 的過程</p>
-<blockquote>
-<p>關於 ORM 的 DATABASE OPERATION 會在下個章節介紹，這邊的重點會著重在兩個 model的資料搬移</p>
-</blockquote>
-<p>以下是一個簡單的範例，建議可以建立一個測試腳本 e.g <code>test.py</code> 來試試</p>
-<blockquote>
-<p>這邊預期開發者已建立好 database及對應的 table schema<br>如果開發者尚未建立 database 及 table schema，以下程式碼將會無法使用<br>建議開發者們可以自行手動建立 database and table schema 或是使用 database migration<br>如果不清楚 database migration，可以參考 <a target="_blank" rel="noopener" href="https://fastapi.tiangolo.com/tutorial/sql-databases/#migrations"><strong>Database migration</strong></a></p>
-</blockquote>
-<figure class="highlight python hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment"># assume create a test.py, and write in</span></span><br><span class="line"><span class="hljs-comment"># import database session, user orm model, user pydantic model</span></span><br><span class="line"><span class="hljs-keyword">from</span> .database <span class="hljs-keyword">import</span> get_db_session</span><br><span class="line"><span class="hljs-keyword">from</span> .schemas <span class="hljs-keyword">import</span> User <span class="hljs-keyword">as</span> UserSchema</span><br><span class="line"><span class="hljs-keyword">from</span> .models <span class="hljs-keyword">import</span> User</span><br><span class="line"><span class="hljs-comment"># import fastapi special encoder jsonable_encoder</span></span><br><span class="line"><span class="hljs-keyword">from</span> fastapi.encoders <span class="hljs-keyword">import</span> jsonable_encoder</span><br><span class="line"></span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">orm_to_pydantic</span>(<span class="hljs-params">orm_model</span>):</span></span><br><span class="line">    <span class="hljs-string">"""將 ORM model 的資料搬移到 Pydantic model"""</span></span><br><span class="line">    <span class="hljs-comment"># 1. convert orm model to json format by jsonable_encoder</span></span><br><span class="line">    <span class="hljs-comment"># 2. unwrapped jsonable query_result into UserSchema(as user pydantic model)</span></span><br><span class="line">    jsonable_result = jsonable_encoder(orm_model)</span><br><span class="line">    <span class="hljs-keyword">return</span> UserSchema(**jsonable_result)</span><br><span class="line"></span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">pydantic_to_orm</span>(<span class="hljs-params">pydantic_model</span>):</span></span><br><span class="line">    <span class="hljs-string">"""將 Pydantic model 的資料搬移到 ORM model"""</span></span><br><span class="line">    <span class="hljs-keyword">return</span> User(**pydantic_model.<span class="hljs-built_in">dict</span>())</span><br><span class="line"></span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">query_user</span>():</span></span><br><span class="line">    <span class="hljs-comment"># get database session, it will return generator first</span></span><br><span class="line">    db = get_db_session()</span><br><span class="line">    <span class="hljs-comment"># execute database query, the result is a list of user orm model</span></span><br><span class="line">    users_orm_model = db.query(User).<span class="hljs-built_in">all</span>()</span><br><span class="line">    user_pydantic_model = [orm_to_pydantic(user_orm_model) <span class="hljs-keyword">for</span> user_orm_model <span class="hljs-keyword">in</span> users_orm_model]</span><br><span class="line">    print(user_pydantic_model)</span><br></pre></td></tr></tbody></table></figure>
-
-<p>上面程式碼，有兩個關於 database operation的部分還沒提到，分別是 database session instance 建立以及 datbase CRUD operation，這兩個部分後面章節會介紹，暫時先不再這裡解釋</p>
-<blockquote>
-<p><code>jsonable_encoder</code> 是 FastAPI 提供的一個方便進行資料格式轉化工具，可以將資料轉換成 JSON data format<br>詳細可以參考至<a target="_blank" rel="noopener" href="https://fastapi.tiangolo.com/tutorial/encoder/">FastAPI - JSON Compatible Encoder</a></p>
-</blockquote>
-<h3 id="Pydantic-model-Config"><a href="#Pydantic-model-Config" class="headerlink" title="Pydantic model Config"></a>Pydantic model Config</h3><p>延續 <strong>如何進行 Pydantic model 和 ORM model 資料搬移?</strong> 章節，當執行範例程式碼會發現回傳出來的結果 pydanic model 的 attribute <code>books</code> 裡面的資料是空的，但如果直接看 database query 的結果反而可以看到關聯資料，為什麼會發生這類情況呢?</p>
-<blockquote>
-<p>主要原因在於 ORM 本身 lazy loading 特性的關係</p>
-</blockquote>
-<p>ORM lazy loading，會讓有建立關聯的 orm model，不能直接抽取關聯資料，除非直接去 access 該 orm model 代表關聯的 attribute e.g 以上述宣告的 <code>Users</code> model 為例，並且以 <code>my_user</code> 代表該 orm model 的 instance，如果要取得關聯的 book 資料，就必須要 access attribute <code>my_user.books</code> 這樣 database 才可以根據 foreign key 找到關聯資料並抽取出來</p>
-<blockquote>
-<p>關於這部分問題的解決方式，可以透過 Pydantic model Config 設定 <code>orm_mode</code> 來處理</p>
-</blockquote>
-<p><code>orm_mode</code> 可以讓 Pydantic model compatible with ORM model，讀取 ORM model資料，一方面進行資料搬移的時候不會出現找不到關聯資料的問題，另一方面因為 pydantic model 整合 FastAPI，可以直接將 Pydantic model 宣告在 path response，當對 db讀取資料，可以不用再手動進行 ORM to Pydantic model的資料搬移，直接在 path operation function 內回傳 orm model就行</p>
-<p>宣告方式，只需要在該 pydantic model 內設定以下程式碼即可 </p>
-<ul>
-<li>For example<figure class="highlight python hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">User</span>(<span class="hljs-params">BaseModel</span>):</span></span><br><span class="line">    <span class="hljs-built_in">id</span>: <span class="hljs-built_in">int</span> = Field(...)</span><br><span class="line">    name: <span class="hljs-built_in">str</span> = Field(...)</span><br><span class="line">    email: <span class="hljs-built_in">str</span> = Field(...)</span><br><span class="line">    active: <span class="hljs-built_in">bool</span> = Field(...)</span><br><span class="line">    books: List[Books]</span><br><span class="line">    <span class="hljs-comment"># 加在這裡</span></span><br><span class="line">    <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Config</span>:</span></span><br><span class="line">            orm_mode = <span class="hljs-literal">True</span></span><br></pre></td></tr></tbody></table></figure></li>
-</ul>
-<p>Pydantic model 加入 <code>orm_mode</code> 之後，可以在回 <strong>如何進行 Pydantic model 和 ORM model 資料搬移?</strong> 章節，實際測試範例程式碼，並確認輸出結果，是不是有解決問題</p>
-<p>設定好 <code>orm_mode</code>之後，還有哪些地方，可以感受到差異呢?</p>
-<ul>
-<li>在 path operation 宣告 response_model<br>  透過 <code>orm_mode</code>，可以直接在 path opearation 直接回傳目標資料的 orm model，fastapi 會再根據 <code>response_model</code> 進行資料驗證及資料轉化  <figure class="highlight python hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment"># assume get_db_session declare in database.py</span></span><br><span class="line"><span class="hljs-keyword">from</span> .database <span class="hljs-keyword">import</span> get_db_session</span><br><span class="line"><span class="hljs-keyword">from</span> .schemas <span class="hljs-keyword">import</span> UserSchema</span><br><span class="line"><span class="hljs-keyword">from</span> .models <span class="hljs-keyword">import</span> User</span><br><span class="line"><span class="hljs-meta">@app.get(<span class="hljs-params"><span class="hljs-string">'/user'</span>, response_model=List[UserSchema]</span>)</span></span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_all_user</span>(<span class="hljs-params">db = get_db_session(<span class="hljs-params"></span>)</span>):</span></span><br><span class="line">    <span class="hljs-keyword">return</span> db.query(User).<span class="hljs-built_in">all</span>()</span><br></pre></td></tr></tbody></table></figure></li>
-</ul>
-<h2 id="建立資料庫-CRUD-方法"><a href="#建立資料庫-CRUD-方法" class="headerlink" title="建立資料庫 CRUD 方法"></a>建立資料庫 CRUD 方法</h2><p>在 FastAPI 內建立 crud 方法，建議根據不同 ORM model(也可以視為不同 table) 來建立各自獨立的 DB操作模組，可以提供給 path operation 使用之外，也方便進行 unit testing</p>
-<p>以下程式碼將會實現基本 CRUD method，並描述在 <code>crud.py</code></p>
-<figure class="highlight python hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment"># import database session 定義 function parameter 的型別</span></span><br><span class="line"><span class="hljs-keyword">from</span> sqlalchemy.orm <span class="hljs-keyword">import</span> Session</span><br><span class="line"><span class="hljs-keyword">from</span> .models <span class="hljs-keyword">import</span> User</span><br><span class="line"><span class="hljs-keyword">from</span> .schemas <span class="hljs-keyword">import</span> User <span class="hljs-keyword">as</span> UserSchema</span><br><span class="line"></span><br><span class="line"><span class="hljs-comment"># 指定查詢符合 User.id 的 user table 資料</span></span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_user</span>(<span class="hljs-params">db: Session, user_id: <span class="hljs-built_in">int</span></span>):</span></span><br><span class="line">    <span class="hljs-keyword">return</span> db.query(User).<span class="hljs-built_in">filter</span>(User.<span class="hljs-built_in">id</span> === user_id)</span><br><span class="line"></span><br><span class="line"><span class="hljs-comment"># 查詢所有 user 資料，並限制每次查詢數量</span></span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_users</span>(<span class="hljs-params">db: Session, skip: <span class="hljs-built_in">int</span> = <span class="hljs-number">0</span>, limit: <span class="hljs-built_in">int</span> = <span class="hljs-number">100</span></span>):</span></span><br><span class="line">    <span class="hljs-keyword">return</span> db.query(models.User).offset(skip).limit(limit).<span class="hljs-built_in">all</span>()</span><br><span class="line">    </span><br><span class="line"><span class="hljs-comment"># 建立 user table 資料</span></span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">craete</span>(<span class="hljs-params">db: Session, user_in: UserSchema</span>):</span></span><br><span class="line">    <span class="hljs-comment"># 轉化 pydantic model to orm model</span></span><br><span class="line">    created_user = User(**user_in.<span class="hljs-built_in">dict</span>())</span><br><span class="line">    <span class="hljs-comment"># add instance object into database session</span></span><br><span class="line">    <span class="hljs-comment"># 增加 user orm model 所建立的 instance 到 database session</span></span><br><span class="line">    db.add(created_user)</span><br><span class="line">    <span class="hljs-comment"># 提交 transaction to database (該 instance 會確實保存在 database)</span></span><br><span class="line">    db.commit()</span><br><span class="line">    <span class="hljs-comment"># refresh instance (從 database 抽取該 instance 資料)</span></span><br><span class="line">    db.refresh(created_user)</span><br></pre></td></tr></tbody></table></figure>
-
-<blockquote>
-<p>可以參考各大網站提供的 SQLAlchemy crud method，這邊就不特別引用參考了<br>關於 Database session 進行基礎 CRUD操作的細節介紹，也可以參考 <a target="_blank" rel="noopener" href="https://docs.sqlalchemy.org/en/13/orm/session_basics.html#basics-of-using-a-session">SQLAlchemy - Basics of Using a Session</a></p>
-</blockquote>
-<h3 id="實際使用-database-operation"><a href="#實際使用-database-operation" class="headerlink" title="實際使用 database operation"></a>實際使用 database operation</h3><p>到目前為止，已經宣告好 database crud 操作了，接著該如何實際使用?</p>
-<p>FastAPI 透過 SQLAlchemy ORM 操作 database，實際上是透過 database session，還記得在 initial create SQLAlchemy 這個章節，有 create database session，接下來如果需要進行任何有關 database 操作，首先需要先建立 database session instance，如下</p>
-<blockquote>
-<p>關於 Session 這部分操作的細節介紹，也可以參考 <a target="_blank" rel="noopener" href="https://docs.sqlalchemy.org/en/13/orm/session_basics.html#when-do-i-construct-a-session-when-do-i-commit-it-and-when-do-i-close-it">SQLAlchemy - When do I construct a Session, when do I commit it, and when do I close it?</a></p>
-</blockquote>
-<blockquote>
-<p>這邊預期開發者已建立好 database及對應的 table schema<br>如果開發者尚未建立 database 及 table schema，以下程式碼將會無法使用<br>建議開發者們可以自行手動建立 database and table schema 或是使用 database migration<br>如果不清楚 database migration，可以參考 <a target="_blank" rel="noopener" href="https://fastapi.tiangolo.com/tutorial/sql-databases/#migrations"><strong>Database migration</strong></a></p>
-</blockquote>
-<p>以下為範例程式碼，建議可以建立一個測試腳本 <code>test.py</code> 來實際運作試試</p>
-<figure class="highlight python hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">from</span> .database <span class="hljs-keyword">import</span> get_db_session</span><br><span class="line"><span class="hljs-keyword">from</span> .crud <span class="hljs-keyword">import</span> get_user</span><br><span class="line"><span class="hljs-keyword">from</span> .schema <span class="hljs-keyword">import</span> User <span class="hljs-keyword">as</span> UserSchema</span><br><span class="line"><span class="hljs-comment"># import fastapi 提供的 json 資料格式轉化工具，協助 transfer data from orm model to pydantic model</span></span><br><span class="line"><span class="hljs-keyword">from</span> fastapi.encoders <span class="hljs-keyword">import</span> jsonable_encoder</span><br><span class="line"></span><br><span class="line"><span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">"__main__"</span>:</span><br><span class="line">    <span class="hljs-comment"># 取得 database session instance，這邊，</span></span><br><span class="line">    db_session = <span class="hljs-built_in">next</span>(get_db_session())</span><br><span class="line">    <span class="hljs-comment"># 執行 database query，並回傳 User model</span></span><br><span class="line">    user = get_user(db_session, user_id=<span class="hljs-number">1</span>)</span><br><span class="line">    <span class="hljs-comment"># 針對 orm model 指定欄位資料的方式，需要像 class.attribute 這樣，以 class 指定 attribute 的方式來 access value</span></span><br><span class="line">    print(user.<span class="hljs-built_in">id</span>)</span><br><span class="line">    <span class="hljs-comment"># 將 user orm model 的資料搬移給 user 的 pydantic model，進行資料驗證和轉化</span></span><br><span class="line">    user = UserSchema(**jsonable_encoder(user))</span><br><span class="line">    <span class="hljs-comment"># pydantic model 可以直接轉化成 dict</span></span><br><span class="line">    print(user.<span class="hljs-built_in">dict</span>())</span><br></pre></td></tr></tbody></table></figure>
-
-<blockquote>
-<p><code>next()</code> 可以取得 iterable object中的下一個 object，generator 也是屬於 iterable object</p>
-</blockquote>
-<h3 id="在-path-operation-使用-database-operation"><a href="#在-path-operation-使用-database-operation" class="headerlink" title="在 path operation 使用 database operation"></a>在 path operation 使用 database operation</h3><p>經過上一個章節<strong>實際使用 database operation</strong> 的介紹，已經知道如何單獨使用 database crud method</p>
-<p>接下來這一個章節，將會介紹該如何在 FastAPI path operation 中進行 database crud operation</p>
-<p>在<strong>檔案結構</strong>章節有提到<code>main.py</code> 這個 fastapi 執行檔，以下程式碼將會描述在該檔案</p>
-<figure class="highlight python hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">from</span> .database <span class="hljs-keyword">import</span> get_db_session</span><br><span class="line"><span class="hljs-keyword">from</span> .crud <span class="hljs-keyword">import</span> get_user</span><br><span class="line"><span class="hljs-keyword">from</span> .schema <span class="hljs-keyword">import</span> User <span class="hljs-keyword">as</span> UserSchema</span><br><span class="line"><span class="hljs-comment"># import fastapi 提供的 json 資料格式轉化工具，協助 transfer data from orm model to pydantic model</span></span><br><span class="line"><span class="hljs-keyword">from</span> fastapi.encoders <span class="hljs-keyword">import</span> jsonable_encoder</span><br><span class="line"><span class="hljs-keyword">from</span> fastapi <span class="hljs-keyword">import</span> Depend, FastAPI, HTTPException</span><br><span class="line">app = FastAPI()</span><br><span class="line"><span class="hljs-meta">@app.get(<span class="hljs-params"><span class="hljs-string">'/user/{user_id}'</span>, response_model=UserSchema</span>)</span></span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_user</span>(<span class="hljs-params">user_id: <span class="hljs-built_in">int</span>, db_session: Session = Depends(<span class="hljs-params">get_db_session</span>)</span>):</span></span><br><span class="line">    <span class="hljs-comment"># 執行 database query，並回傳 User model</span></span><br><span class="line">    user = get_user(db_session, user_id=user_id)</span><br><span class="line">    <span class="hljs-comment"># 針對 orm model 指定欄位資料的方式，需要像 class.attribute 這樣，以 class 指定 attribute 的方式來 access value</span></span><br><span class="line">    print(user.<span class="hljs-built_in">id</span>)</span><br><span class="line">    <span class="hljs-comment"># 將 user orm model 的資料搬移給 user 的 pydantic model，進行資料驗證和轉化</span></span><br><span class="line">    user = UserSchema(**jsonable_encoder(user))</span><br><span class="line">    <span class="hljs-comment"># pydantic model 可以直接轉化成 dict</span></span><br><span class="line">    print(user.<span class="hljs-built_in">dict</span>())</span><br><span class="line">    <span class="hljs-keyword">return</span></span><br></pre></td></tr></tbody></table></figure>
-
-<ul>
-<li><p>解釋<code>Depends(get_db_session)</code></p>
-<p>已知如果要進行 database operation，需要透過 <code>get_db_session()</code> 取得 database session instance</p>
-<p>不過針對 API 每一次 request，都需要建立一個新的 session 來處理 request，該怎麼做呢?</p>
-<ol>
-<li>每個 path operation 都宣告 <code>db = next(get_db_session())</code> 來取得 session instance</li>
-<li>透過 FastAPI 支援的 Dependency 功能，在 request 近來 fucntion 之前，先取得 session instance 之後，在 inject 到 path operation function，並在 API respond 之後，關閉 session 連線</li>
-</ol>
-</li>
-</ul>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p>以上內容均參考至</p>
-<ul>
-<li><a target="_blank" rel="noopener" href="https://fastapi.tiangolo.com/tutorial/sql-databases/">FastAPI - SQL (Relational) Databases</a></li>
-<li><a target="_blank" rel="noopener" href="https://fastapi.tiangolo.com/tutorial/encoder/">FastAPI - JSON Compatible Encoder</a></li>
-<li><a target="_blank" rel="noopener" href="https://fastapi.tiangolo.com/tutorial/sql-databases/#migrations">FastAPI- Database migration</a></li>
-<li><a target="_blank" rel="noopener" href="https://docs.sqlalchemy.org/en/13/orm/tutorial.html">SQLAlchemy</a></li>
-</ul>
-<h2 id="進階用法"><a href="#進階用法" class="headerlink" title="進階用法"></a>進階用法</h2><p>待補充</p>
-</body></html>
+<li>進階用法</li></ul></body></html>
+        <p class="article-more-link">
+            <a href="/2021/01/20/fastapi-ch5/#more">Read More</a>
+        </p>
     
     </div>
     
@@ -385,7 +256,7 @@
         <span class="column is-narrow">
             
             
-            9 minutes read (About 1286 words)
+            9 minutes read (About 1287 words)
         </span>
         
     </div>
@@ -397,75 +268,10 @@
 <li>Response</li>
 <li>Exception</li>
 <li>Reference</li>
-<li>進階用法</li>
-</ul>
-<h2 id="Response"><a href="#Response" class="headerlink" title="Response"></a>Response</h2><p>FastAPI 可以設定 <code>response_model</code> 定義 API 輸出的資料格式</p>
-<p>以下是 <code>response_model</code> 提供的幾個特點:</p>
-<ol>
-<li>驗證 API response 的輸出資料</li>
-<li>轉化輸出資料對應 response_model 所定義的資料型別</li>
-<li>可以根據 response_model 所定義的資料格式，限制可以輸出的資料</li>
-<li>輸出資料格式一樣可以生成 JSON schema，在 OpenAPI 上呈現，方便開發者可以直接從文件上看到 API預期回傳的資料格式</li>
-</ol>
-<figure class="highlight python hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">from</span> pydantic <span class="hljs-keyword">import</span> BaseModel</span><br><span class="line"></span><br><span class="line"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">UserBase</span>(<span class="hljs-params">BaseModel</span>):</span></span><br><span class="line">    username: <span class="hljs-built_in">str</span>    </span><br><span class="line"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">UserIn</span>(<span class="hljs-params">UserBase</span>):</span></span><br><span class="line">    password: <span class="hljs-built_in">str</span></span><br><span class="line"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">UserInfo</span>(<span class="hljs-params">UserBase</span>):</span></span><br><span class="line">    email: <span class="hljs-built_in">str</span></span><br><span class="line">    phone: <span class="hljs-built_in">int</span></span><br><span class="line"></span><br><span class="line"><span class="hljs-meta">@app.get(<span class="hljs-params"><span class="hljs-string">''</span>, response_model=<span class="hljs-built_in">str</span></span>)</span></span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">test</span>():</span></span><br><span class="line">    <span class="hljs-keyword">return</span> <span class="hljs-number">123</span></span><br><span class="line"></span><br><span class="line"><span class="hljs-comment"># 發送 request 到這隻 API，request body 內有包含 username 和 password</span></span><br><span class="line"><span class="hljs-comment"># 而 path operation function 的邏輯內沒有經過額外處理，便直接將 request body 的資料回應輸出</span></span><br><span class="line"><span class="hljs-comment"># 最後輸出資料會因為經過 response_model 所定義的資料格式限制，過濾掉 password 這個 attribute</span></span><br><span class="line"><span class="hljs-meta">@app.post(<span class="hljs-params"><span class="hljs-string">'/user/login'</span>, response_model=UserBase</span>)</span></span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">login</span>(<span class="hljs-params">user_in: UserIn</span>):</span></span><br><span class="line">    <span class="hljs-keyword">return</span> user_in</span><br></pre></td></tr></tbody></table></figure>
-
-<blockquote>
-<p>可以從 OpenAPI 產生的文件上看到，API 有包含輸出資料的格式，方便開發者了解 API<br>以上大致內容出自 <a target="_blank" rel="noopener" href="https://fastapi.tiangolo.com/tutorial/response-model/">FastAPI - Response Model</a></p>
-</blockquote>
-<h3 id="定義-response-model-其他資料型別"><a href="#定義-response-model-其他資料型別" class="headerlink" title="定義 response_model 其他資料型別"></a>定義 response_model 其他資料型別</h3><p>另外 <code>response_model</code> 也可以定義 <code>Optional</code>、<code>Union</code>、<code>List</code> 類型的資料型別</p>
-<blockquote>
-<p>可以參考 <a target="_blank" rel="noopener" href="https://fastapi.tiangolo.com/tutorial/extra-models/#union-or-anyof">FastAPI - Extra Model</a></p>
-</blockquote>
-<h3 id="定義-HTTP-status-code"><a href="#定義-HTTP-status-code" class="headerlink" title="定義 HTTP status code"></a>定義 HTTP status code</h3><p>除了定義 <code>response_model</code>之外，也可以定義 API 預期回應的 HTTP status code在 path operation</p>
-<figure class="highlight python hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-meta">@app.post(<span class="hljs-params"><span class="hljs-string">'/user/login'</span>, response_model=UserBase, status_code=<span class="hljs-number">201</span></span>)</span></span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">login</span>(<span class="hljs-params">user_in: UserIn</span>):</span></span><br><span class="line">    <span class="hljs-keyword">return</span> user_in    </span><br></pre></td></tr></tbody></table></figure>
-
-<p>如果覺得 HTTP status code 記不太起來，但是知道狀態訊息類別，也可以使用 FastAPI 提供的 status </p>
-<figure class="highlight python hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">from</span> fastapi <span class="hljs-keyword">import</span> FastAPI, status</span><br><span class="line"><span class="hljs-meta">@app.post(<span class="hljs-params"><span class="hljs-string">'/user/login'</span>, response_model=UserBase, status_code=status.HTTP_201_CREATED</span>)</span></span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">login</span>(<span class="hljs-params">user_in: UserIn</span>):</span></span><br><span class="line">    <span class="hljs-keyword">return</span> user_in</span><br></pre></td></tr></tbody></table></figure>
-
-<blockquote>
-<p>如果需要針對不同 API 處理狀態，提供適當的 http status code的話也可以參考這邊 <a target="_blank" rel="noopener" href="https://fastapi.tiangolo.com/advanced/response-change-status-code/">FastAPI - Change Status code</a></p>
-</blockquote>
-<h2 id="Exception"><a href="#Exception" class="headerlink" title="Exception"></a>Exception</h2><blockquote>
-<p>什麼是有益的 Exception?</p>
-<blockquote>
-<p>在回應錯誤訊息中，訊息內容能不能夠準確描述錯誤原因，以及透過狀態碼讓 Client 更快速了解錯誤類別，便是有益的 Exception</p>
-</blockquote>
-</blockquote>
-<p>FastAPI 提供 <code>HTTPException</code> 來 raise 錯誤</p>
-<blockquote>
-<p>FastAPI 的 <code>HTTPException</code> 有個特點是直接繼承 Python 的 <code>Exception</code>，所以可以用 <code>raise</code> 拋出錯誤</p>
-<p>透過使用 raise 的其中一個好處，當我們建立通用方法，提供給 path operation 時，也可以在通用方法邏輯內，直接 raise exception中斷程式繼續執行。</p>
-<p>這一個特點，對於在 FastAPI 使用 Dependencies 或是 Security 設定時，會很有幫助。 另一個用 raise 的好處，當然就是寫法很直覺明確</p>
-</blockquote>
-<p>以下是一般使用 HTTPException 範例</p>
-<figure class="highlight python hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment"># 1. 先 imoprt fastapi.HTTPException</span></span><br><span class="line"><span class="hljs-keyword">from</span> fastapi <span class="hljs-keyword">import</span> HTTPException</span><br><span class="line"></span><br><span class="line"><span class="hljs-comment"># detail 主要放置錯誤回傳訊息，可以接收 str, list, dict 這些類型的資料</span></span><br><span class="line"><span class="hljs-comment"># 這些資料最後會由 FastAPI 自動轉換為 JSON</span></span><br><span class="line"><span class="hljs-meta">@app.get(<span class="hljs-params"><span class="hljs-string">'/test'</span></span>)</span></span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">test</span>():</span></span><br><span class="line">    <span class="hljs-keyword">raise</span> HTTPException(</span><br><span class="line">        status_code=<span class="hljs-number">404</span>,</span><br><span class="line">        detail=<span class="hljs-string">'Something not found'</span>,</span><br><span class="line">        headers={<span class="hljs-string">'header_field'</span>: <span class="hljs-string">'header_value'</span>}</span><br><span class="line">    )</span><br></pre></td></tr></tbody></table></figure>
-
-<p>當然也可自訂 exception</p>
-<ul>
-<li><p>Custome exception</p>
-<figure class="highlight python hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">from</span> fastapi <span class="hljs-keyword">import</span> FastAPI, Request</span><br><span class="line"><span class="hljs-keyword">from</span> fastapi.responses <span class="hljs-keyword">import</span> JSONResponse</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="hljs-comment"># 1. 建立 custom exception，並繼承 Python Exception</span></span><br><span class="line"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">LetMeCustomException</span>(<span class="hljs-params">Exception</span>):</span></span><br><span class="line">    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__init__</span>(<span class="hljs-params">sefl, message: <span class="hljs-built_in">str</span></span>)</span></span><br><span class="line">        self.message = message</span><br><span class="line"><span class="hljs-comment"># 2. register exception into FastAPI instance, make FastAPI can globally handle this exception</span></span><br><span class="line"><span class="hljs-meta">@app.exception_handler(<span class="hljs-params">LetMeCustomException</span>)</span></span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">custom_exception_handler</span>(<span class="hljs-params">request, exc: LetMeCustomException</span>):</span></span><br><span class="line">    <span class="hljs-comment"># 3. exception handler can return clear content with JSON format</span></span><br><span class="line">    print(<span class="hljs-string">'Hey! Review this error message'</span>, exc)</span><br><span class="line">    <span class="hljs-keyword">return</span> JSONResponse(</span><br><span class="line">            status_code=<span class="hljs-number">400</span>,</span><br><span class="line">            content={<span class="hljs-string">"message"</span>: <span class="hljs-string">f"Oops! <span class="hljs-subst">{exc.message}</span> did something. There goes a rainbow..."</span>},</span><br><span class="line">        )</span><br><span class="line"></span><br><span class="line"><span class="hljs-comment"># 4. raise custome exception</span></span><br><span class="line"><span class="hljs-meta">@app.get(<span class="hljs-params"><span class="hljs-string">'/test'</span></span>)</span></span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">test</span>():</span></span><br><span class="line">    <span class="hljs-keyword">raise</span> LetMeCustomException(message=<span class="hljs-string">'I do not know why I got this error'</span>)</span><br></pre></td></tr></tbody></table></figure></li>
-<li><p>除此之外，也可以覆蓋 FastAPI 預設的 Exception</p>
-</li>
-</ul>
-<p>比如 reqeust 含有無效的資料，FastAPI 預設是 raise <code>RequestValidationError</code> (這個 Exception 繼承 Pydantic 的 <code>ValidationError</code> 可以拋出明確資料錯誤訊息)，我想去修改這個 exception 的訊息格式，把 JSON 改回 Plain text</p>
-<figure class="highlight python hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">from</span> fastapi <span class="hljs-keyword">import</span> Request</span><br><span class="line"><span class="hljs-keyword">from</span> fastapi.exceptions <span class="hljs-keyword">import</span> RequestValidationError</span><br><span class="line"><span class="hljs-keyword">from</span> fastapi.responses <span class="hljs-keyword">import</span> PlainTextResponse</span><br><span class="line"></span><br><span class="line"><span class="hljs-meta">@app.custom_exception_handler(<span class="hljs-params">RequestValidationError</span>)</span></span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">validation_exception_handler</span>(<span class="hljs-params">request, exc</span>):</span></span><br><span class="line">    print(<span class="hljs-string">'Hey! The client request invalid data!'</span>, exc)</span><br><span class="line">    <span class="hljs-keyword">return</span> PlainTextResponse(<span class="hljs-built_in">str</span>(exc), status_code=<span class="hljs-number">400</span>)</span><br></pre></td></tr></tbody></table></figure>
-
-<p>或者是以覆蓋的方式來調整 FastAPI 預設 HTTPException 的資料格式或行為</p>
-<blockquote>
-<p>這邊比較特別的是，如果想要覆蓋 HTTPException，官方文件建議直接覆蓋 Starlette 的 HTTPException</p>
-<p>因為 FastAPI 基於 Starlette 建構框架，許多 WEB request/response 處理都是直接繼承 Starlette 的 module</p>
-<p>所以透過直接修改 Starlette Exception，這樣便能夠一起調整 Starlette 內同樣繼承或使用 Starlette HTTPException 的程式碼/extension/plug-ins</p>
-</blockquote>
-<figure class="highlight python hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">from</span> fastapi <span class="hljs-keyword">import</span> Request</span><br><span class="line"><span class="hljs-keyword">from</span> fastapi.responses <span class="hljs-keyword">import</span> PlainTextResponse</span><br><span class="line"><span class="hljs-keyword">from</span> starlette.exceptions <span class="hljs-keyword">import</span> HTTPException <span class="hljs-keyword">as</span> StarletteHTTPException</span><br><span class="line"></span><br><span class="line"><span class="hljs-meta">@app.custom_exception_handler(<span class="hljs-params">StarletteHTTPException</span>)</span></span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">http_exception_handler</span>(<span class="hljs-params">request, exc</span>):</span></span><br><span class="line">    print(<span class="hljs-string">'Hey I got http error!'</span>, exc)</span><br><span class="line">    <span class="hljs-keyword">return</span> PlainTextResponse(<span class="hljs-built_in">str</span>(exc.detail), status_code=exc.status_code)</span><br></pre></td></tr></tbody></table></figure>
-
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p>以上內容均參考至</p>
-<ul>
-<li><a target="_blank" rel="noopener" href="https://fastapi.tiangolo.com/tutorial/response-model/">FastAPI - Response Model</a></li>
-<li><a target="_blank" rel="noopener" href="https://fastapi.tiangolo.com/tutorial/response-status-code/">FastAPI - Response Status code</a></li>
-<li><a target="_blank" rel="noopener" href="https://fastapi.tiangolo.com/tutorial/handling-errors/">FastAPI - Handling Errors</a></li>
-</ul>
-<h2 id="進階用法"><a href="#進階用法" class="headerlink" title="進階用法"></a>進階用法</h2><p>待補充</p>
-</body></html>
+<li>進階用法</li></ul></body></html>
+        <p class="article-more-link">
+            <a href="/2021/01/16/fastapi-ch4/#more">Read More</a>
+        </p>
     
     </div>
     
@@ -498,7 +304,7 @@
         <span class="column is-narrow">
             
             
-            16 minutes read (About 2427 words)
+            16 minutes read (About 2428 words)
         </span>
         
     </div>
@@ -517,148 +323,10 @@
 <li>Reference</li>
 <li>進階用法<ul>
 <li>function argument 混和宣告不同的 parameter</li>
-<li><code>Body</code> module 設定</li>
-</ul>
-</li>
-</ul>
-<h2 id="Request-body-是什麼"><a href="#Request-body-是什麼" class="headerlink" title="Request body 是什麼?"></a>Request body 是什麼?</h2><p>大致上來說 HTTP API，都只是定義一個 Request可以怎麼發送資料給 HTTP Server，不管是 HTTP GET、POST、PUT、PATCH、DELETE method 都是一樣的行為</p>
-<p>只是 HTTP 有規範不同 HTTP Method 有不同的使用目的，在使用目的不同的前提下，某些對應 HTTP method的 request 不應該加入特定的參數，因為這樣違反規範 e.g GET Method 的 request 就被規範不應該加入 request body/payload</p>
-<blockquote>
-<p>GET v.s POST</p>
-<p>很常見的面試題目，測試面試者對於 HTTP 的熟悉度</p>
-<blockquote>
-<p>兩者可以發送資料給 HTTP Server，主要差異在於，POST method 可以將資料放在 request body，而 GET method 在 HTTP 的規範中表示加入 request body，則沒有支援 request body</p>
-<p>所以當使用者需要發送私人資料或是不需要公開的資料時，使用 HTTP POST method 的 request 是比較適當的方式，因為當 Backend 的 WEB Server 有支援 HTTPS protocol時，request body 內的資料可以被加密保護，當 request 發送到網路上，轉換成封包資料飛來飛去的時候，已經是加密過的封包，使用者便不用擔心剛剛傳輸的資料會被人偷窺</p>
-</blockquote>
-</blockquote>
-<p>而 request body 通常會在 HTTP POST method 的 request中使用，主要就是將資料放到 request body並發送給相對應的 API</p>
-<p>request body 支援許多資料格式，大部分都是以 JSON 為主要資料格式進行傳輸</p>
-<p>而在 FastAPI 中，會使用 Pydantic 來定義 Server 接收到 request之後， request body 所需要攜帶的參數</p>
-<p>透過 Pydantic 的特性，來進行資料驗證及型別轉化</p>
-<h2 id="Pydantic"><a href="#Pydantic" class="headerlink" title="Pydantic"></a>Pydantic</h2><blockquote>
-<p>Pydantic 介紹、支援功能、應用在哪些地方</p>
-</blockquote>
-<p>FastAPI 主要使用 Pydantic 建立 Request body model，當 api server 收到 request之後，會自動轉換為對應的 model</p>
-<blockquote>
-<p>Pydantic 的一個特點是，強制在 runtime 時使用 type hint，並且在 data invalid時提供明確清楚的錯誤回報，告訴開發者哪邊出了錯誤</p>
-<p>Pydantic 使用 python type annotations 做到 data validation and settings management</p>
-</blockquote>
-<p>今天想要實作一個新增書本資料的 API，整個流程會是</p>
-<ol>
-<li>定義書本資料格式</li>
-<li>以書本資料格式來定義 request body 可以接收的資料內容</li>
-<li>定義新增資料的 API</li>
-<li>實作新增資料邏輯</li>
-</ol>
-<h2 id="定義資料格式"><a href="#定義資料格式" class="headerlink" title="定義資料格式"></a>定義資料格式</h2><p>這邊將使用 Pydantic 來定義資料格式</p>
-<figure class="highlight python hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment"># 1. Import pydantic</span></span><br><span class="line"><span class="hljs-keyword">from</span> pydantic <span class="hljs-keyword">import</span> BaseModel</span><br><span class="line"></span><br><span class="line"><span class="hljs-comment"># 2. 建立 data model</span></span><br><span class="line"><span class="hljs-comment"># 透過宣告 class 並繼承 Pydantic BaseModel，變可以實作一個 data model</span></span><br><span class="line"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Book</span>(<span class="hljs-params">BaseModel</span>):</span></span><br><span class="line">    book_id: <span class="hljs-built_in">str</span></span><br><span class="line">    book_name: <span class="hljs-built_in">str</span></span><br><span class="line">    book_price: <span class="hljs-built_in">int</span></span><br><span class="line">    book_type: <span class="hljs-built_in">str</span></span><br></pre></td></tr></tbody></table></figure>
-
-<p>Pydantic model 定義的 attribute 沒有設定 default value，就會是 required，如果不給予 value會回報錯誤</p>
-<p>下面是一個以 Pydantic 定義的 JSON object(aka Python dict)，以 <code>Book</code> 為範例</p>
-<figure class="highlight json hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">{</span><br><span class="line">    <span class="hljs-attr">"book_id"</span>: '',</span><br><span class="line">    <span class="hljs-attr">"book_name"</span>: '',</span><br><span class="line">    <span class="hljs-attr">"book_price"</span>: <span class="hljs-number">0</span>,</span><br><span class="line">    <span class="hljs-attr">"book_type"</span>: '',</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
-
-<p>如果想要某些參數是 optional，也就是不一定要設定參數的話，可以透過 python 內建模組 <strong>typing</strong> 使用 <code>Optional</code> 或 <code>Union</code></p>
-<blockquote>
-<p>關於 Optional 和 Union 的差別可以從 official doc 來了解<br><a target="_blank" rel="noopener" href="https://docs.python.org/3/library/typing.html#typing.Union">Python3 - typing</a></p>
-</blockquote>
-<figure class="highlight python hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">from</span> typing <span class="hljs-keyword">import</span> Optional, Union</span><br><span class="line"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Book</span>(<span class="hljs-params">BaseModel</span>):</span></span><br><span class="line">    book_id: <span class="hljs-built_in">str</span></span><br><span class="line">    book_name: <span class="hljs-built_in">str</span></span><br><span class="line">    book_price: <span class="hljs-built_in">int</span></span><br><span class="line">    book_type: Optional[<span class="hljs-built_in">str</span>] <span class="hljs-comment"># 預設值為 None</span></span><br></pre></td></tr></tbody></table></figure>
-
-<h2 id="預先定義-request-body"><a href="#預先定義-request-body" class="headerlink" title="預先定義 request body"></a>預先定義 request body</h2><p>定義好書本資料的完整格式之後，可以先思考如果使用者要新增一本書，有需要自行設定所有資料並放到 request body嗎?</p>
-<p>因為像是 <code>book_id</code> 這類 ID 的資料，應該由系統透過一些 <code>uuid</code> 模組或是加密模組自動產生資料會比較適當</p>
-<p>所以針對這類型的資料參數，不希望放進 request body 的情況，Pydantic 的 data model 也可以透過物件繼承 inheritance 的方式來組合不同 data model</p>
-<p>另一個好處是，可以減少定義相同的資料參數</p>
-<ul>
-<li><p>拆解前的資料格式</p>
-<figure class="highlight python hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment"># 這是一開始定義的資料格式</span></span><br><span class="line"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Book</span>(<span class="hljs-params">BaseModel</span>):</span></span><br><span class="line">    book_id: <span class="hljs-built_in">str</span></span><br><span class="line">    book_name: <span class="hljs-built_in">str</span></span><br><span class="line">    book_price: <span class="hljs-built_in">int</span></span><br><span class="line">    book_type: <span class="hljs-built_in">str</span></span><br></pre></td></tr></tbody></table></figure></li>
-<li><p>透過 Pydantic 的特性，將這些定義好的 data model，以物件繼承的方式，組合深層結構的 data model</p>
-<figure class="highlight python hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">BookBase</span>(<span class="hljs-params">BaseModel</span>):</span></span><br><span class="line">    <span class="hljs-string">"""通用的書本資料 model"""</span></span><br><span class="line">    book_name: <span class="hljs-built_in">str</span></span><br><span class="line">    book_price: <span class="hljs-built_in">int</span></span><br><span class="line">    book_type: <span class="hljs-built_in">str</span></span><br><span class="line"></span><br><span class="line"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">BookInfo</span>(<span class="hljs-params">BookBase</span>):</span></span><br><span class="line">    <span class="hljs-string">"""完整的書本資料 model"""</span></span><br><span class="line">    book_id: <span class="hljs-built_in">str</span></span><br><span class="line"></span><br><span class="line"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">NewBook</span>(<span class="hljs-params">BookBase</span>):</span></span><br><span class="line">    <span class="hljs-string">"""提供給新增書本 API的 request body"""</span></span><br><span class="line">    <span class="hljs-keyword">pass</span></span><br></pre></td></tr></tbody></table></figure></li>
-</ul>
-<h2 id="定義新增資料的-API"><a href="#定義新增資料的-API" class="headerlink" title="定義新增資料的 API"></a>定義新增資料的 API</h2><p>定義好書本資料以及提供新增資料 API可使用在 request body 的 data model之後，便可以開始定義 API</p>
-<figure class="highlight python hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-meta">@app.post(<span class="hljs-params"><span class="hljs-string">'/books'</span></span>)</span></span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">create_book</span>(<span class="hljs-params">new_book: NewBook</span>):</span></span><br><span class="line">    <span class="hljs-keyword">pass</span></span><br></pre></td></tr></tbody></table></figure>
-
-<h4 id="解析程式碼"><a href="#解析程式碼" class="headerlink" title="解析程式碼"></a>解析程式碼</h4><ul>
-<li><code>@app.post('/books')</code>: 定義 path operation 為 POST，並命名路徑為 <code>/books</code>，因為 HTTP method 不同，所以 request是可以明確呼叫 GET 或 POST 的，不會受到相同路徑影響</li>
-<li><code>def create_book(new_book: NewBook)</code>: 在 chapter 3有提到 path operation function 的 argument 如果沒有出現在 api route 上，會被視為 query parameter，不過 FastAPI 在 path operation function 會判斷如果 argument 為 Pydantic model，則會被自動視為 request body</li>
-<li><code>pass</code>: 暫時不實現邏輯，下一個 section 會介紹</li>
-</ul>
-<blockquote>
-<p>針對在 function 內加入多個可以作為 Request body 的 argument，請參考下面的 <strong>進階用法-function argument 混和宣告不同的 parameter</strong></p>
-</blockquote>
-<blockquote>
-<p>如果是針對如何在 path operation 加入單獨一個 request body attribute，請參考下面的 <strong>進階用法-<code>Body</code> module 設定</strong></p>
-</blockquote>
-<h2 id="實作新增資料邏輯"><a href="#實作新增資料邏輯" class="headerlink" title="實作新增資料邏輯"></a>實作新增資料邏輯</h2><figure class="highlight python hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">import</span> uuid</span><br><span class="line"><span class="hljs-meta">@app.post(<span class="hljs-params"><span class="hljs-string">'/books'</span></span>)</span></span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">create_book</span>(<span class="hljs-params">new_book: NewBook</span>) -&gt; BookInfo:</span></span><br><span class="line">    <span class="hljs-keyword">return</span> BookInfo(**new_book.<span class="hljs-built_in">dict</span>(), book_id=uuid.uuid4())</span><br></pre></td></tr></tbody></table></figure>
-
-<h4 id="解釋程式碼"><a href="#解釋程式碼" class="headerlink" title="解釋程式碼:"></a>解釋程式碼:</h4><ul>
-<li><code>import uuid</code>: import 內建模組 uuid，自動產生獨立的字串</li>
-<li><code>def create_book(new_book: NewBook) -&gt; BookInfo</code>: 定義 API 輸出的資料格式為 BookInfo，OpenAPI 會自動產生對應的資料模型</li>
-<li><code>new_book.dict()</code>: 是 Pydantic 內建支援的方法，可以將 Pydantic model 轉成 dict type</li>
-<li><code>BookInfo(**new_book.dict(), book_id=uuid.uuid4())</code>: 是將轉換成 <code>dict</code> type的 <code>new_book</code> 參數，以 keyword argument 傳送進 <code>BookInfo</code> Pydantic model，並只保留 attribute 相符合的資料，在 FastAPI 中會很常使用這個方法</li>
-</ul>
-<blockquote>
-<p>關於 dict() 資料轉化的說明可以參考 <a target="_blank" rel="noopener" href="https://fastapi.tiangolo.com/tutorial/extra-models/#about-user_indict">FastAPI - Extra models</a></p>
-</blockquote>
-<h2 id="啟動-HTTP-Server"><a href="#啟動-HTTP-Server" class="headerlink" title="啟動 HTTP Server"></a>啟動 HTTP Server</h2><p>執行</p>
-<figure class="highlight bash hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ uvicorn main:app</span><br></pre></td></tr></tbody></table></figure>
-
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><ul>
-<li><a target="_blank" rel="noopener" href="https://fastapi.tiangolo.com/tutorial/body/#create-your-data-model">FastAPI- Request Body</a></li>
-<li><a target="_blank" rel="noopener" href="https://fastapi.tiangolo.com/tutorial/extra-models/#about-user_indict">FastAPI - Extra Model</a></li>
-</ul>
-<h2 id="進階用法"><a href="#進階用法" class="headerlink" title="進階用法"></a>進階用法</h2><h3 id="function-argument-混和宣告不同的-parameter"><a href="#function-argument-混和宣告不同的-parameter" class="headerlink" title="function argument 混和宣告不同的 parameter"></a>function argument 混和宣告不同的 parameter</h3><ul>
-<li>Path parameter 和 Request Body  <figure class="highlight python hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment"># FastAPI 會自動匹配 function parameter 和 path parameter，並從 path parameter 取得 value pass給 function argument</span></span><br><span class="line"><span class="hljs-meta">@app.put(<span class="hljs-params"><span class="hljs-string">'/user/{user_id}'</span></span>)</span></span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">update_user</span>(<span class="hljs-params">user_id: <span class="hljs-built_in">str</span>, updated_user: UserInfo</span>):</span></span><br><span class="line">    <span class="hljs-keyword">return</span> updated_user</span><br></pre></td></tr></tbody></table></figure></li>
-</ul>
-<blockquote>
-<p>針對 query paramter, path parameter, request body 這三種類型的 function parameter，FastAPI 一樣可以自動判斷<br>path parameter 透過與 path 匹配來判斷<br>query parameter 只要 parameter name 沒有定義在 path，以及型別沒有宣告為 Pydantic model<br>request body 只要 parameter 宣告為 Pydantic model</p>
-</blockquote>
-<ul>
-<li>多個宣告為 Request body的 parameter  <figure class="highlight python hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-meta">@app.post(<span class="hljs-params"><span class="hljs-string">'/book'</span></span>)</span></span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">create_book</span>(<span class="hljs-params">user_info: UserInfo, new_book: Book</span>):</span></span><br><span class="line">    <span class="hljs-keyword">return</span> new_book</span><br></pre></td></tr></tbody></table></figure>
-<ul>
-<li>預期的 request body 如下<figure class="highlight json hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">{</span><br><span class="line">    <span class="hljs-attr">"user_info"</span>: {</span><br><span class="line">        <span class="hljs-attr">"username"</span>: <span class="hljs-string">""</span>,</span><br><span class="line">        <span class="hljs-attr">"email"</span>: <span class="hljs-string">""</span>,</span><br><span class="line">        <span class="hljs-attr">"phone"</span>: <span class="hljs-number">0</span></span><br><span class="line">    },</span><br><span class="line">    <span class="hljs-attr">"book"</span>: {</span><br><span class="line">        <span class="hljs-attr">"name"</span>: <span class="hljs-string">""</span>,</span><br><span class="line">        <span class="hljs-attr">"type"</span>: <span class="hljs-string">""</span>,</span><br><span class="line">        <span class="hljs-attr">"price"</span>: <span class="hljs-number">0</span></span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure></li>
-</ul>
-</li>
-</ul>
-<h3 id="Body-module-設定"><a href="#Body-module-設定" class="headerlink" title="Body module 設定"></a><code>Body</code> module 設定</h3><p>FAST API 提供 <code>Body</code> module，可以指定 function argument 為 request body 的參數，並設定額外的 metadata or validation</p>
-<p>而 Body 的應用場景有兩種:</p>
-<ol>
-<li>可以提供 request body 額外 metadata 和 validation</li>
-<li>可以宣告額外/單獨的 request body 參數 (通常會在 request body 只有一兩個參數，不想要另外定義 Pydantic model 時使用)</li>
-</ol>
-<ul>
-<li>下面是宣告單獨 request body 參數的範例  <figure class="highlight python hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment"># 原本 user_info 內宣告的參數全部集中在 body attribute user_info，形成巢狀結構，並且在 request body 第一層加上新的 attribute</span></span><br><span class="line"><span class="hljs-comment"># Body(...) 第一個 argument 為設定預設值，如果不需要設定預設值直接 asigne 三個小數點就行</span></span><br><span class="line"><span class="hljs-meta">@app.post(<span class="hljs-params"><span class="hljs-string">'/user/set'</span></span>)</span></span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">set_user</span>(<span class="hljs-params">user_info: UserInfo, activate: <span class="hljs-built_in">bool</span> = Body(<span class="hljs-params">...</span>)</span>):</span></span><br></pre></td></tr></tbody></table></figure>
-<ul>
-<li>預期的 request body 如下<figure class="highlight json hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">{</span><br><span class="line">    <span class="hljs-attr">"user_info"</span>: {</span><br><span class="line">        <span class="hljs-attr">"username"</span>: <span class="hljs-string">""</span>,</span><br><span class="line">        <span class="hljs-attr">"email"</span>: <span class="hljs-string">""</span>,</span><br><span class="line">        <span class="hljs-attr">"phone"</span>: <span class="hljs-number">0</span></span><br><span class="line">    },</span><br><span class="line">    <span class="hljs-attr">"activate"</span>: False</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure></li>
-</ul>
-</li>
-</ul>
-<blockquote>
-<p>注意: 如果沒有帶入 <code>Body</code> module 的話，FastAPI 會把這個參數視為 query parameter</p>
-</blockquote>
-<p>另外如果 API 只需要設定單獨一個 request body attribute 的話，建議可以特別在 <code>Body</code> 內加入 <code>embed=True</code> 這個屬性</p>
-<p>否則 FastAPI 在 OpenAPI 上看這隻 API時，會發現 request body 內沒有提供 attribute name，只有呈現數值，給我們填入而已</p>
-<ul>
-<li><code>Body</code>沒有加入<code>embed=True</code>的範例  <figure class="highlight python hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-meta">@app.post(<span class="hljs-params"><span class="hljs-string">'/test'</span></span>)</span></span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">test</span>(<span class="hljs-params">activate: <span class="hljs-built_in">bool</span> = Body(<span class="hljs-params">...</span>)</span>):</span></span><br></pre></td></tr></tbody></table></figure>
-<ul>
-<li>OpenAPI 上看到的 request body，只能夠填入數值，不是 json 格式<figure class="highlight hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">true</span><br></pre></td></tr></tbody></table></figure></li>
-</ul>
-</li>
-<li><code>Body</code>有加入<code>embed=True</code>的範例  <figure class="highlight python hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-meta">@app.post(<span class="hljs-params"><span class="hljs-string">'/test'</span></span>)</span></span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">test</span>(<span class="hljs-params">activate: <span class="hljs-built_in">bool</span> = Body(<span class="hljs-params">..., embed=<span class="hljs-literal">True</span></span>)</span>):</span></span><br></pre></td></tr></tbody></table></figure>
-<ul>
-<li>OpenAPI 上看到的 request body<figure class="highlight json hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">{<span class="hljs-attr">"activate"</span>: <span class="hljs-literal">true</span>}</span><br></pre></td></tr></tbody></table></figure></li>
-</ul>
-</li>
-</ul>
-<p>不過針對 function 有多個宣告為 Body 的 argument 而言，便不會有這類狀況出現</p>
-<figure class="highlight python hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-meta">@app.post(<span class="hljs-params"><span class="hljs-string">'/test'</span></span>)</span></span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">test</span>(<span class="hljs-params">user_name: <span class="hljs-built_in">str</span> = Body(<span class="hljs-params">...</span>), activate: <span class="hljs-built_in">bool</span> = Body(<span class="hljs-params">...</span>)</span>):</span></span><br></pre></td></tr></tbody></table></figure>
-<ul>
-<li>OpenAPI 上看到的 request body<figure class="highlight json hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">{<span class="hljs-attr">"user_name"</span>:'', <span class="hljs-attr">"activate"</span>: <span class="hljs-literal">true</span>}</span><br></pre></td></tr></tbody></table></figure></li>
-</ul>
-<p>另外一個會使用到 <code>embed</code> 的情況是，希望單獨宣告 Pydantic model 的 argument，也可以在 request body 內明確指定 function argument name</p>
-<figure class="highlight python hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-meta">@app.post(<span class="hljs-params"><span class="hljs-string">'/test'</span></span>)</span></span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">test</span>(<span class="hljs-params">user_info: UserInfo = Body(<span class="hljs-params">..., embed=<span class="hljs-literal">True</span></span>)</span>):</span></span><br></pre></td></tr></tbody></table></figure>
-<ul>
-<li>OpenAPI 上看到的 request body<figure class="highlight json hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">{<span class="hljs-attr">"user_info"</span>: {<span class="hljs-attr">"username"</span>: <span class="hljs-string">""</span>, <span class="hljs-attr">"email"</span>: <span class="hljs-string">""</span>,<span class="hljs-attr">"phone"</span>: <span class="hljs-number">0</span>}}</span><br></pre></td></tr></tbody></table></figure></li>
-</ul>
-</body></html>
+<li><code>Body</code> module 設定</li></ul></li></ul></body></html>
+        <p class="article-more-link">
+            <a href="/2021/01/13/fastapi-ch3/#more">Read More</a>
+        </p>
     
     </div>
     
@@ -691,7 +359,7 @@
         <span class="column is-narrow">
             
             
-            15 minutes read (About 2237 words)
+            15 minutes read (About 2238 words)
         </span>
         
     </div>
@@ -704,109 +372,10 @@
 <li>API 是什麼?</li>
 <li>RESTful 是什麼?</li>
 <li>定義 query parameter</li>
-<li>定義 path parameter</li>
-</ul>
-<h2 id="甚麼是-API"><a href="#甚麼是-API" class="headerlink" title="甚麼是 API?"></a>甚麼是 API?</h2><blockquote>
-<p>API 全名為 Application Program Interface，主要定義應用程式的資料輸入輸出介面，使用者可以透過呼叫 API，來取得 API提供者所提供的資料，又或是透過 API 發送資料給 Server</p>
-</blockquote>
-<p>如果之前去過線上購物商城買東西，回憶一下，大多畫面首先呈現的是一長串的商品列表，當找到有興趣的商品之後，會點進去商品資訊頁面，去看商品的詳細資訊</p>
-<p>這些我們平時熟悉的網站，在背後進行資料傳輸的通訊介面，就是 API，這些 API 在上述這個場景的目的是提供資料給使用者去讀取</p>
-<h2 id="甚麼是-Restful"><a href="#甚麼是-Restful" class="headerlink" title="甚麼是 Restful?"></a>甚麼是 Restful?</h2><p>Restful 是一個 API 設計風格</p>
-<blockquote>
-<p>關於 Restful 的參考資料，可以從 google 上找到許多資料，這邊就不特別引用參考</p>
-</blockquote>
-<h2 id="定義-path-parameter"><a href="#定義-path-parameter" class="headerlink" title="定義 path parameter"></a>定義 path parameter</h2><p>根據 Restful 的設計風格，在設計一隻 GET method API時，如果是要讀取單一資源，可以透過提供 URI 並帶入 path parameter 的方式，來索取特定資源</p>
-<p>如果是要讀取所有資源，並且希望能夠進行排序、筆數限制等操作，則可以透過帶入 query parameter</p>
-<blockquote>
-<p>Path parameter 是什麼?</p>
-<blockquote>
-<p>可以作為 URL一部分的變數，通常會應用在指定路徑的 URI</p>
-</blockquote>
-</blockquote>
-<blockquote>
-<p>Query parameter 是什麼?</p>
-<blockquote>
-<p>通常會放在 URL 最後面，並且以 <code>?</code>區隔開來</p>
-</blockquote>
-</blockquote>
-<p>假設現在有個情境，要做一間書店，書店需要提供很多書籍資料，也需要提供一本書的詳細資訊，所以起碼要有兩隻 API 來提供這兩個功能，如下</p>
-<ul>
-<li>提供所有書籍資料: GET <code>books/</code></li>
-<li>提供一本書籍資料: GET <code>books/{book_id}</code></li>
-</ul>
-<figure class="highlight python hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">from</span> fastapi <span class="hljs-keyword">import</span> FastAPI</span><br><span class="line">app = FastAPI()</span><br><span class="line">book_storage = [<span class="hljs-string">'加碼特斯拉'</span>,<span class="hljs-string">'一泊二日好去處'</span>,<span class="hljs-string">'鳳梨圖鑑'</span>]</span><br><span class="line"></span><br><span class="line"><span class="hljs-meta">@app.get(<span class="hljs-params"><span class="hljs-string">'/books/{book_id}'</span></span>)</span></span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_book</span>(<span class="hljs-params">book_id: <span class="hljs-built_in">int</span></span>):</span></span><br><span class="line">    <span class="hljs-keyword">return</span> book_storage[book_id]</span><br></pre></td></tr></tbody></table></figure>
-
-<h4 id="解析程式碼"><a href="#解析程式碼" class="headerlink" title="解析程式碼"></a>解析程式碼</h4><ul>
-<li><code>@app.get</code>: 定義一個 path operation decorator，並指定 GET operation</li>
-<li><code>@app.get('/books/{book_id}')</code>: 在定義好 path operation，命名使用的 path 為 <code>/books/</code>，後面加入 path parameter <code>{book_id}</code></li>
-<li><code>def get_book(book_id: int):</code>: 定義 <code>get_book</code> path operation function，並指定 <code>book_id</code> argument</li>
-</ul>
-<h4 id="描述整段程式碼"><a href="#描述整段程式碼" class="headerlink" title="描述整段程式碼"></a>描述整段程式碼</h4><p>當我們定義好 path operation decorator 並在命名路徑中加入以大括號包住的 path parameter <code>{book_id}</code>，當這隻 API 收到 HTTP request 時，會對應 <code>book_id</code> path parameter的位置抓取 value，並自動傳入到 <code>get_book</code> path operation function 的 <code>book_id</code> argument</p>
-<p>所以如果請求呼叫 GET <code>/books/1</code> API的話，則呈現結果會是 <code>'一泊二日好去處'</code></p>
-<h4 id="Data-conversion-amp-validation"><a href="#Data-conversion-amp-validation" class="headerlink" title="Data conversion &amp; validation"></a>Data conversion &amp; validation</h4><p>另外，FastAPI 有支援 data conversion 的功能，可以注意到 <code>get_book(book_id: int)</code> 是把 <code>book_id</code> 指定為 <code>int</code>，所以 HTTP request 打到這隻 API時，會自動轉化 path parameter 的資料型別從 <code>str</code> 轉化為 <code>int</code> (因為 HTTP request path的資料型別為 <code>str</code>)</p>
-<p>不過需要注意的是如果 parameter 所保有的 value，如果不符合轉化後的型別，一樣會發生錯誤，比如 HTTP request <code>books/abc</code></p>
-<p>除了 data conversion，FastAPI 也支援 data validation，如果測試 API 是透過 OpenAPI 文件操作，則實際上收到的錯誤訊息，會明顯提示說是 data type 的問題</p>
-<blockquote>
-<p>FastAPI 主要透過 Pydantic 來實現 Data conversion 和 Data validation，詳請可以參考 chapter 1</p>
-</blockquote>
-<h3 id="注意宣告-API-的順序"><a href="#注意宣告-API-的順序" class="headerlink" title="注意宣告 API 的順序"></a>注意宣告 API 的順序</h3><p>在使用 WEB API 框架開發時，偶而有種情況是如果我想要多定義一隻固定 API，讓我獲取固定資料就行 e.g 定義一隻 API，預期回傳只有我會看的書 <code>/books/only_for_me</code>，如下</p>
-<figure class="highlight python hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-string">"""</span></span><br><span class="line"><span class="hljs-string">錯誤範例</span></span><br><span class="line"><span class="hljs-string">"""</span></span><br><span class="line"><span class="hljs-meta">@app.get(<span class="hljs-params"><span class="hljs-string">'/books/{book_id}'</span></span>)</span></span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_book</span>(<span class="hljs-params">book_id: string</span>):</span></span><br><span class="line">    print(<span class="hljs-string">f'Return book to Client: <span class="hljs-subst">{book_id}</span>'</span>)</span><br><span class="line">    <span class="hljs-keyword">return</span> book_id</span><br><span class="line"></span><br><span class="line"><span class="hljs-meta">@app.get(<span class="hljs-params"><span class="hljs-string">'/books/only_for_me'</span></span>)</span></span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_book_only_for_me</span>(<span class="hljs-params">book_id: string</span>):</span></span><br><span class="line">    <span class="hljs-keyword">return</span> <span class="hljs-string">'the book that I can read only'</span></span><br></pre></td></tr></tbody></table></figure>
-
-<p>當執行上述錯誤範例程式碼，並進行操作測試時，會發現怎麼發送請求給 <code>/books/only_for_me</code>都不是預期的結果，但是發送請求給 <code>/booKs/1</code> 就沒問題</p>
-<p>這是一個很典型的 API route 宣告順序問題，可以思考一下，API route 是不是一樣的 HTTP Method、一樣的 path prefix、一樣的 path parameter 位置</p>
-<p>原因在於，當兩個定義的 API route有衝突時，因為 FastAPI 是按照 API 宣告順序來決定執行哪一個 path operation的關係，所以會優先以前面宣告的 API 為主要呼叫對象 (如上，request 是跑到 <code>get_book()</code> 而不是 <code>get_book_only_for_me()</code>)</p>
-<p>所以針對上述狀況，可以試著調整 API 宣告順序</p>
-<figure class="highlight python hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-string">"""</span></span><br><span class="line"><span class="hljs-string">以下是針對這類特殊情況所建議的宣告順序</span></span><br><span class="line"><span class="hljs-string">"""</span></span><br><span class="line"><span class="hljs-meta">@app.get(<span class="hljs-params"><span class="hljs-string">'/books/test'</span></span>)</span></span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_book</span>(<span class="hljs-params">book_id: string</span>):</span></span><br><span class="line"></span><br><span class="line"><span class="hljs-meta">@app.get(<span class="hljs-params"><span class="hljs-string">'/books/{book_id}'</span></span>)</span></span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_book</span>(<span class="hljs-params">book_id: string</span>):</span></span><br></pre></td></tr></tbody></table></figure>
-
-<h2 id="定義-query-parameter"><a href="#定義-query-parameter" class="headerlink" title="定義 query parameter"></a>定義 query parameter</h2><p>當已經清楚 path parameter 如何定義之後，接下來需要知道如何定義 query parameter</p>
-<blockquote>
-<p>Query parameter 以 <code>?</code> 和 URL 區隔，並以 key-value pair 進行參數指定和待入資料，如果有多個 query parameter 則以 <code>&amp;</code> 區隔</p>
-<p>e.g., <code>/books?name=jack&amp;age=456</code></p>
-</blockquote>
-<p>以下為範例程式碼</p>
-<figure class="highlight python hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">book_storage = [<span class="hljs-string">'加碼特斯拉'</span>,<span class="hljs-string">'一泊二日好去處'</span>,<span class="hljs-string">'鳳梨圖鑑'</span>]</span><br><span class="line"></span><br><span class="line"><span class="hljs-meta">@app.get(<span class="hljs-params"><span class="hljs-string">'/books/{book_id}'</span></span>)</span></span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_book</span>(<span class="hljs-params">book_id: <span class="hljs-built_in">int</span></span>):</span></span><br><span class="line">    <span class="hljs-keyword">return</span> book_storage[book_id]</span><br><span class="line"></span><br><span class="line"><span class="hljs-meta">@app.get(<span class="hljs-params"><span class="hljs-string">'/books'</span></span>)</span></span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_all_books</span>(<span class="hljs-params">limit: <span class="hljs-built_in">int</span> = <span class="hljs-number">3</span>, sort_by: <span class="hljs-built_in">str</span> = <span class="hljs-string">'asc'</span>, show_metadata: <span class="hljs-built_in">bool</span> = <span class="hljs-literal">False</span></span>):</span></span><br><span class="line">    respond_books = {</span><br><span class="line">        <span class="hljs-string">'data'</span>: []</span><br><span class="line">    }</span><br><span class="line">    <span class="hljs-keyword">if</span> sort_by == <span class="hljs-string">'desc'</span>:</span><br><span class="line">        book_storage.reverse()</span><br><span class="line">    respond_books[<span class="hljs-string">'data'</span>] = book_storage[:limit]</span><br><span class="line"></span><br><span class="line">    <span class="hljs-keyword">if</span> show_metadata:</span><br><span class="line">        respond_books[<span class="hljs-string">'count'</span>] = limit</span><br><span class="line">    </span><br><span class="line">    <span class="hljs-keyword">return</span> respond_books</span><br></pre></td></tr></tbody></table></figure>
-
-<h4 id="描述整段程式碼-1"><a href="#描述整段程式碼-1" class="headerlink" title="描述整段程式碼:"></a>描述整段程式碼:</h4><p>當我們定義好 path operation，只要 path operation function 定義的 argument 沒有作為 path parameter ，出現在 path operation -decorator 的命名路徑中的話，則 FastAPI 會自動把 argument 視為 query parameter</p>
-<p>所以從上述程式碼來看，已經定義好了三個 query parameter</p>
-<ul>
-<li><code>limit</code>: 限制資料筆數，預設值為 3</li>
-<li><code>sort_by</code>: 決定倒序資料，還是正序資料，預設值為 asc</li>
-<li><code>show_metadata</code>: 支援額外資料格式，預設為 false</li>
-</ul>
-<p>如果請求呼叫 GET <code>/books?limit=2</code>，則呈現結果會是 <code>{ 'data': ['加碼特斯拉','一泊二日好去處'] }</code></p>
-<h4 id="Data-conversion-and-Data-validation"><a href="#Data-conversion-and-Data-validation" class="headerlink" title="Data conversion and Data validation"></a>Data conversion and Data validation</h4><p>Query parameter 同樣也有支援 Data conversion and Data validation</p>
-<p>特別是上述程式碼中出現的 <code>show_metadata</code>，在 FastAPI 中，只要 query parameter 註解型別為 <code>bool</code>，則 FastAPI 會以下面幾個數值進行判斷</p>
-<ul>
-<li>True: <code>yes</code>, <code>true</code>, <code>1</code>, <code>on</code><br>  e.g <code>/books?limit=2&amp;show_metadata=yes</code></li>
-<li>False: <code>no</code>, <code>false</code>, <code>0</code>, <code>off</code><br>  e.g <code>/books?limit=2&amp;show_metadata=off</code></li>
-</ul>
-<h2 id="Query-parameter-and-Path-parameter"><a href="#Query-parameter-and-Path-parameter" class="headerlink" title="Query parameter and Path parameter"></a>Query parameter and Path parameter</h2><p>另外 Query parameter 和 Path parameter 可以一起定義在 path operation，只要 path operation function 的 argument 有定義在 api path，則 FastAPI 都會自動視為 Path parameter，其他則視為 Query parameter</p>
-<ul>
-<li>For example<figure class="highlight python hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-meta">@app.get(<span class="hljs-params"><span class="hljs-string">'/books/{book_id}'</span></span>)</span></span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_book</span>(<span class="hljs-params">book_id: <span class="hljs-built_in">int</span>, show_price: <span class="hljs-built_in">bool</span> = <span class="hljs-literal">False</span></span>):</span></span><br><span class="line">    res_book = {</span><br><span class="line">        <span class="hljs-string">"id"</span>: book_id,</span><br><span class="line">        <span class="hljs-string">"name"</span>: <span class="hljs-string">"蘋果日報"</span>,</span><br><span class="line">    }</span><br><span class="line">    <span class="hljs-keyword">if</span> show_price:</span><br><span class="line">        res_book[<span class="hljs-string">'price'</span>] = <span class="hljs-number">100</span></span><br><span class="line">    <span class="hljs-keyword">return</span> res_book</span><br></pre></td></tr></tbody></table></figure></li>
-</ul>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><ul>
-<li><a target="_blank" rel="noopener" href="https://fastapi.tiangolo.com/tutorial/path-params/">Path Params</a></li>
-<li><a target="_blank" rel="noopener" href="https://fastapi.tiangolo.com/tutorial/query-params/">Query Params</a></li>
-</ul>
-<p>理解到這個階段之後，相信讀者們應該知道如何在 FastAPI 宣告一個讀取資料的 API，並且可以根據 API 目的，定義 API 的 path/query parameter</p>
-<p>下一個章節，將會介紹如何實現一隻以新增資料為目的的 API</p>
-<p>最後，針對 Path parameter 和 Query parameter，FastAPI 還提供了一些進階設定，其中包括可以規範這兩個 parameter 的長度限制、別名、加入 regex…，如果有興趣的讀者可以繼續往 <strong>進階用法</strong>章節了解</p>
-<h2 id="進階用法"><a href="#進階用法" class="headerlink" title="進階用法"></a>進階用法</h2><p><a target="_blank" rel="noopener" href="https://fastapi.tiangolo.com/tutorial/path-params/#predefined-values">待補充 - predefined path parameter</a></p>
-<p><a target="_blank" rel="noopener" href="https://fastapi.tiangolo.com/tutorial/query-params-str-validations/">待補充 - query parameter and string validation</a></p>
-<p>如果需要針對 path parameter or query parameter 增加 metadata or type validation 的話，FAST API支援 import 各自的 module來實現<br>metatdata 比如有:</p>
-<ol>
-<li><code>title</code></li>
-</ol>
-<p>type validation 比如有:</p>
-<ol>
-<li><code>ge=1</code>greater than or equal 1</li>
-<li><code>le=3</code>less then 3</li>
-<li><code>gt=5</code> greater than 5</li>
-<li><code>lt=5.5</code> less than 5.5</li>
-</ol>
-<figure class="highlight python hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">from</span> fastapi <span class="hljs-keyword">import</span> Path, Query</span><br><span class="line"></span><br><span class="line"><span class="hljs-meta">@app.get(<span class="hljs-params"><span class="hljs-string">'/users'</span></span>)</span></span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_user</span>(<span class="hljs-params">order_by: <span class="hljs-built_in">str</span> = Query(<span class="hljs-params">..., title=<span class="hljs-string">"this is order_by attribute"</span></span>)</span>)</span></span><br><span class="line"><span class="hljs-function"></span></span><br><span class="line"><span class="hljs-function"># 比較特別的是 <span class="hljs-title">path</span> <span class="hljs-title">parameter</span>，即便有使用 <span class="hljs-title">module</span>，並且給予 <span class="hljs-title">default</span> <span class="hljs-title">value</span>，<span class="hljs-title">FAST</span> <span class="hljs-title">API</span> 在接收 <span class="hljs-title">request</span> 時，還是會要求需要帶數值，才能運作</span></span><br><span class="line"><span class="hljs-function">@<span class="hljs-title">app</span>.<span class="hljs-title">get</span>(<span class="hljs-params"><span class="hljs-string">'/users/{user_id}'</span></span>)</span></span><br><span class="line"><span class="hljs-function"><span class="hljs-title">def</span> <span class="hljs-title">get_user</span>(<span class="hljs-params">user_id: <span class="hljs-built_in">str</span> = Path(<span class="hljs-params">..., title=<span class="hljs-string">"this is a user id"</span></span>)</span>)</span></span><br></pre></td></tr></tbody></table></figure>
-
-</body></html>
+<li>定義 path parameter</li></ul></body></html>
+        <p class="article-more-link">
+            <a href="/2021/01/10/fastapi-ch2/#more">Read More</a>
+        </p>
     
     </div>
     
@@ -839,7 +408,7 @@
         <span class="column is-narrow">
             
             
-            5 minutes read (About 823 words)
+            7 minutes read (About 1080 words)
         </span>
         
     </div>
@@ -852,86 +421,10 @@
 <li>FastAPI 需要的工具</li>
 <li>環境 Setup</li>
 <li>建立 Fast instance</li>
-<li>Execute fastapi web application server</li>
-</ul>
-<h2 id="環境要求"><a href="#環境要求" class="headerlink" title="環境要求"></a>環境要求</h2><p>Python 3.7</p>
-<h2 id="FastAPI-需要的工具"><a href="#FastAPI-需要的工具" class="headerlink" title="FastAPI 需要的工具"></a>FastAPI 需要的工具</h2><ul>
-<li>Pydantic</li>
-<li>Uvicorn</li>
-</ul>
-<h2 id="環境-Setup"><a href="#環境-Setup" class="headerlink" title="環境 Setup"></a>環境 Setup</h2><blockquote>
-<p>開始之前，也可以先建立虛擬環境進行開發，可以參考 virtualenv</p>
-</blockquote>
-<ul>
-<li><p>安裝 fastapi 和 uvicorn</p>
-<figure class="highlight bash hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ pip install fastapi</span><br><span class="line">$ pip install uvicorn</span><br></pre></td></tr></tbody></table></figure></li>
-<li><p>如果懶得個別安裝，也可以直接安裝完整工具包</p>
-<figure class="highlight bash hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ pip3 install fastapi[all]</span><br></pre></td></tr></tbody></table></figure></li>
-</ul>
-<blockquote>
-<p>uvicorn 是什麼?</p>
-<blockquote>
-<p>uvicorn 是一個使用 uvloop and httptools 實現 ASGI 的 HTTP Server，而 FastAPI 基於 Startlette 框架建構，以及 Starlette 框架屬於實現 ASGI 的框架，如果需要執行 ASGI Web Application，就得需要有支援 ASGI 的 HTTP Server</p>
-</blockquote>
-<p>詳細可以參考 <a target="_blank" rel="noopener" href="https://www.uvicorn.org/">uvicorn</a></p>
-</blockquote>
-<h2 id="建立-FastAPI-instance"><a href="#建立-FastAPI-instance" class="headerlink" title="建立 FastAPI instance"></a>建立 FastAPI instance</h2><ul>
-<li><p>在指定目錄內建立一個 <code>main.py</code> 檔案</p>
-  <figure class="highlight bash hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ mkdir fastapi_pratice</span><br></pre></td></tr></tbody></table></figure></li>
-<li><p>編輯 <code>main.py</code>，並建立 FastAPI instance</p>
-  <figure class="highlight python hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment"># import FastAPI module</span></span><br><span class="line"><span class="hljs-keyword">from</span> fastapi <span class="hljs-keyword">import</span> FastAPI</span><br><span class="line"></span><br><span class="line"><span class="hljs-comment"># 建立 FastAPI instance</span></span><br><span class="line">app = FastAPI()</span><br></pre></td></tr></tbody></table></figure></li>
-<li><p>定義一個 GET method 的 api endpoint 及命名 api path</p>
-  <figure class="highlight python hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-meta">@app.get(<span class="hljs-params"><span class="hljs-string">'/'</span></span>)</span></span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">foo</span>():</span></span><br><span class="line">    <span class="hljs-keyword">return</span> <span class="hljs-string">'Hi this is a test.'</span></span><br></pre></td></tr></tbody></table></figure>
-
-<p>  解析上述程式碼:</p>
-<ul>
-<li><code>@app</code> 是一個 path operation decorator，可以指定要執行哪一種 path operation<ul>
-<li>GET: <code>@app.get</code></li>
-<li>POST: <code>@app.post</code></li>
-<li>PUT: <code>@app.put</code></li>
-<li>PATCH: <code>@app.patch</code></li>
-<li>DELETE: <code>@app.delete</code></li>
-</ul>
-</li>
-<li><code>foo()</code> 執行函式，主要描述需要實現的邏輯。在 FastAPI 會把這類函式統稱為 <strong>path operation function</strong></li>
-</ul>
-<p>  所以整段程式碼是在表達，在 <code>foo()</code> 上面套用 <code>@app</code>，主要是告訴 FastAPI <code>foo()</code> 會對應路徑為 <code>'/'</code> api path，當 FastAPI Application Server 收到 HTTP request 的路徑為為 <code>/</code>時會呼叫 <code>foo()</code></p>
-<blockquote>
-<p>path operation 是什麼?</p>
-<blockquote>
-<p>可以視為 HTTP method</p>
-</blockquote>
-</blockquote>
-<blockquote>
-<p>decorator 是什麼?</p>
-<blockquote>
-<p>裝飾器，是 python 提供的語法，可以把 function 獨立套用到任一 function，以實現裝飾器設計模式的效果</p>
-</blockquote>
-</blockquote>
-</li>
-</ul>
-<h2 id="Execute-fastapi-web-application-server"><a href="#Execute-fastapi-web-application-server" class="headerlink" title="Execute fastapi web application server"></a>Execute fastapi web application server</h2><p>當 WEB Application 執行檔完成之後，便能執行</p>
-<figure class="highlight bash hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ uvicorn main:app --reload</span><br></pre></td></tr></tbody></table></figure>
-
-<p>解析上述指令:</p>
-<ul>
-<li><code>main</code> 為指定 fastapi 進入點的執行檔案 e.g main.py</li>
-<li><code>app</code> 為指定該執行檔案內，所宣告為 FastAPI instance 的變數，從上述來看我們命名 app variable 為 FastAPI instance</li>
-<li><code>--reload</code> 為指定 uvicorn 每次只要 fastapi 程式碼有任何更動，都需要重新啟動 Server已同步更新更正內容，通常只在進行開發時使用</li>
-</ul>
-<blockquote>
-<p>For example:</p>
-<blockquote>
-<p>我將 fastapi 進入點檔案命名為 <code>app.py</code>，並且在檔案內建立一個 FastAPI instance，並 assign 給命名為 <code>app</code> 的變數，所以當我需要啟動 server 時，就需要輸入 <code>$ uvicorn app:app</code></p>
-</blockquote>
-</blockquote>
-<p>此時前往 <a target="_blank" rel="noopener" href="http://127.0.0.1:8000/docs">http://127.0.0.1:8000/docs</a> 便能看到所產生的 Open API 文件(Swagger)，而 API 文件本身可以進行互動操作，所以未來開發的任何一支 API 如果想要進行手動測試，便可以直接在上面操作</p>
-<p>現在應該大概了解 FastAPI 的使用流程，下一個章節則會介紹如果要實現一個讀取資料的 RESTful API，該知道哪些設定以及定義呢?</p>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p>此篇內容參考以下:</p>
-<ul>
-<li><a target="_blank" rel="noopener" href="https://fastapi.tiangolo.com/tutorial/first-steps/">FastAPI Official - First Step</a></li>
-</ul>
-</body></html>
+<li>Execute fastapi web application server</li></ul></body></html>
+        <p class="article-more-link">
+            <a href="/2021/01/09/fastapi-ch1/#more">Read More</a>
+        </p>
     
     </div>
     
@@ -964,7 +457,7 @@
         <span class="column is-narrow">
             
             
-            7 minutes read (About 1112 words)
+            7 minutes read (About 1113 words)
         </span>
         
     </div>
@@ -975,76 +468,10 @@
 <p>因為之前專案以 FastAPI 進行開發，所以打算把之前對 FastAPI的理解，寫成一個系列文章</p>
 <p>不過本人還很菜，所以決定這次系列主題，會以剛學會程式語言的新手或是 Junior工程師為主要對象</p>
 <p>每個章節都會針對技術名詞，做簡單介紹和引用參考，並且會集中說明 FastAPI 的使用術語，一步步無痛引導讀者感受 FastAPI 的好處</p>
-<p>現在就開始進入系列主題，【快速上車 FastAPI，感受開發快感】</p>
-<h2 id="Outline"><a href="#Outline" class="headerlink" title="Outline"></a>Outline</h2><ul>
-<li>FastAPI 是什麼?</li>
-<li>FastAPI 特色</li>
-<li>FastAPI 的優點、缺點</li>
-</ul>
-<h2 id="What-is-FastAPI"><a href="#What-is-FastAPI" class="headerlink" title="What is FastAPI"></a>What is FastAPI</h2><blockquote>
-<p>FastAPI framework, high performance, easy to learn, fast to code, ready for production</p>
-</blockquote>
-<p>FastAPI 是一個容易上手，並且可以快速開發高效能 WEB API 的框架</p>
-<p>從字面上來看</p>
-<ul>
-<li><strong>high performance</strong>: FastAPI 基於 ASGI framework 建構，可以建立 Async I/O 服務，提供更快速的效能</li>
-<li><strong>easy to learn</strong>: FastAPI 在初始設計時，便是以容易上手為其中一個目的，除了官方文件寫得清楚之外，模組使用及程式碼描述也具有 intuitive直覺性</li>
-<li><strong>fast to code</strong>: FastAPI 沒有太多框架提供的特殊語法，大多使用 Python 內建語法及模組，減少額外學習成本；另一方面，FastAPI 在模組使用及程式碼描述上也很 intuitive直覺，開發者可以很快速熟悉框架</li>
-</ul>
-<p>另外，FastAPI 完全基於 Python 3.6 版本開發，可以使用許多 Python 3.6 新加入的功能: f-string、type hint</p>
-<blockquote>
-<p>ASGI 是什麼?</p>
-<blockquote>
-<p>ASGI (Asynchronous Server Gateway Interface) is a spiritual successor to WSGI, intended to provide a standard interface between async-capable Python web servers, frameworks, and applications.</p>
-</blockquote>
-<blockquote>
-<p>ASGI 全名為 Asynchronous Server Gateway Interface，just a little difference with WSGI (Web Server Gateway Interface)，可以在具有 async 功能的 Python web servers、frameworks、applications 之間提供 standard interface</p>
-</blockquote>
-</blockquote>
-<h2 id="FastAPI-特色"><a href="#FastAPI-特色" class="headerlink" title="FastAPI 特色"></a>FastAPI 特色</h2><p>FastAPI 的作者研究許多知名的開源專案，獲取各個開源工具的優點及設計哲學，經過徹底研究之後，才開發出 FastAPI 框架</p>
-<p>以下是 FastAPI 主要特色:</p>
-<ul>
-<li>FastAPI 完全基於 Python 3.6 版本開發，只支援 Python 3.6 以上的版本</li>
-<li>FastAPI 整個框架遵循 Open standard 設計，可以自動產生 Open API 規格的 API 文件 e.g Swagger</li>
-<li>FastAPI 基於 Starlette 建構，負責處理 Web gateway interface，包括 API path、</li>
-<li>FastAPI 基於 Pydantic 建購，負責處理資料輸入/輸出的型別驗證及轉換，可以應用在專案環境變數管理</li>
-</ul>
-<blockquote>
-<p>Open Standard?</p>
-<blockquote>
-<p>Open API 是指 Open Standard<br>Swagger 實際上是基於 Open API規格所設計的工具，可以產生 API文件</p>
-</blockquote>
-</blockquote>
-<blockquote>
-<p>Starlette 是什麼? 可以做甚麼? 好處在哪?</p>
-<blockquote>
-<p>Starlette 是一個 lightweight ASGI framework/toolkit 適合建立 high performance asyncio service，需要搭配 ASGI server 使用 e.g uvicorn</p>
-</blockquote>
-<p>詳細可以參考 <a target="_blank" rel="noopener" href="https://www.starlette.io/">Starlette</a></p>
-</blockquote>
-<blockquote>
-<p>uvicorn 是什麼?</p>
-<blockquote>
-<p>uvicorn 是一個使用 uvloop and httptools 實現 ASGI 的 Http Server</p>
-</blockquote>
-<p>詳細可以參考 <a target="_blank" rel="noopener" href="https://www.uvicorn.org/">uvicorn</a></p>
-</blockquote>
-<blockquote>
-<p>Pydantic 是什麼?</p>
-<blockquote>
-<p>Pydantic 是一個使用 python type annotations 來進行資料驗證和設定的管理工具，可以強制在 runtime 執行 type hint，並針對無效的資料提供 user friendly 的錯誤訊息</p>
-</blockquote>
-<p>詳細可以參考 <a target="_blank" rel="noopener" href="https://pydantic-docs.helpmanual.io/">Pydantic</a></p>
-</blockquote>
-<p>還有一些在開發時，覺得很好用的特點</p>
-<ul>
-<li> Editor 支援提供 auto-complete的功能</li>
-</ul>
-<p>以上就是 FastAPI 的介紹和特色，之前使用的經驗是，對於需要快速開發 API 服務，並且 API 服務啟動後可以直接提供 Swagger API 文件這一點，有非常驚豔的感受。因為作為開發者，不用再另外處理 Open API 套件鑲入來提供 API 文件，而且一般開發時所描述的資料型別及 docstring，可以直接呈現在 API 文件上的資訊描述，等於是開發者本身在規範程式碼，清楚描述程式碼的同時，便可以直接透過自動生成的 API 文件來反映開發者對於文件描述的程度</p>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><ul>
-<li><a target="_blank" rel="noopener" href="https://fastapi.tiangolo.com/">FastAPI</a></li>
-</ul>
-</body></html>
+<p>現在就開始進入系列主題，【快速上車 FastAPI，感受開發快感】</p></body></html>
+        <p class="article-more-link">
+            <a href="/2021/01/09/fastapi-ch0/#more">Read More</a>
+        </p>
     
     </div>
     

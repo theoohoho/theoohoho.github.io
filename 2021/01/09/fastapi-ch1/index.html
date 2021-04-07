@@ -16,19 +16,24 @@
 
 
 
-    <meta name="description" content="Purpose: 快速上手和了解 FastAPI，所以會盡量講解常用到的 API 設定，會避免一些比較深入的設定 此章節主要會從環境安裝開始，簡單走一遍 FastAPI 啟動服務的流程 Outline 環境要求 FastAPI 需要的工具 環境 Setup 建立 Fast instance Execute fastapi web application server  環境要求Python 3.7">
+    <meta name="description" content="Purpose: 快速上手和了解 FastAPI，所以會盡量講解常用到的 API 設定，會避免一些比較深入的設定 此章節主要會從環境安裝開始，簡單走一遍 FastAPI 啟動服務的流程 Outline 環境要求 FastAPI 需要的工具 環境 Setup 建立 Fast instance Execute fastapi web application server">
 <meta property="og:type" content="article">
 <meta property="og:title" content="【快速上車 FastAPI，感受開發快感】 - 快速感受 FastAPI">
 <meta property="og:url" content="https://theoohoho.github.io/2021/01/09/fastapi-ch1/index.html">
 <meta property="og:site_name" content="Theoo&#39;s Diary">
-<meta property="og:description" content="Purpose: 快速上手和了解 FastAPI，所以會盡量講解常用到的 API 設定，會避免一些比較深入的設定 此章節主要會從環境安裝開始，簡單走一遍 FastAPI 啟動服務的流程 Outline 環境要求 FastAPI 需要的工具 環境 Setup 建立 Fast instance Execute fastapi web application server  環境要求Python 3.7">
+<meta property="og:description" content="Purpose: 快速上手和了解 FastAPI，所以會盡量講解常用到的 API 設定，會避免一些比較深入的設定 此章節主要會從環境安裝開始，簡單走一遍 FastAPI 啟動服務的流程 Outline 環境要求 FastAPI 需要的工具 環境 Setup 建立 Fast instance Execute fastapi web application server">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://theoohoho.github.io/images/fastapi/fastapi-ch1-1.PNG">
+<meta property="og:image" content="https://theoohoho.github.io/images/fastapi/fastapi-ch1-1.PNG">
+<meta property="og:image" content="https://theoohoho.github.io/images/fastapi/fastapi-ch1-2.PNG">
+<meta property="og:image" content="https://theoohoho.github.io/images/fastapi/fastapi-ch1-3.PNG">
 <meta property="article:published_time" content="2021-01-09T03:11:50.000Z">
 <meta property="article:modified_time" content="2021-01-09T03:11:50.000Z">
 <meta property="article:author" content="theoohoho">
 <meta property="article:tag" content="FastAPI">
 <meta property="article:tag" content="Python">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://theoohoho.github.io/images/fastapi/fastapi-ch1-1.PNG">
 
 
 
@@ -144,7 +149,7 @@
         <span class="column is-narrow">
             
             
-            5 minutes read (About 823 words)
+            7 minutes read (About 1080 words)
         </span>
         
     </div>
@@ -157,9 +162,10 @@
 <li>FastAPI 需要的工具</li>
 <li>環境 Setup</li>
 <li>建立 Fast instance</li>
-<li>Execute fastapi web application server</li>
+<li>Execute fastapi web application server<span id="more"></span> 
+<h2 id="環境要求"><a href="#環境要求" class="headerlink" title="環境要求"></a>環境要求</h2></li>
 </ul>
-<h2 id="環境要求"><a href="#環境要求" class="headerlink" title="環境要求"></a>環境要求</h2><p>Python 3.7</p>
+<p>Python 3.7</p>
 <h2 id="FastAPI-需要的工具"><a href="#FastAPI-需要的工具" class="headerlink" title="FastAPI 需要的工具"></a>FastAPI 需要的工具</h2><ul>
 <li>Pydantic</li>
 <li>Uvicorn</li>
@@ -215,6 +221,8 @@
 </blockquote>
 </li>
 </ul>
+<p>完整的程式碼長醬</p>
+<p><img src="/images/fastapi/fastapi-ch1-1.PNG"></p>
 <h2 id="Execute-fastapi-web-application-server"><a href="#Execute-fastapi-web-application-server" class="headerlink" title="Execute fastapi web application server"></a>Execute fastapi web application server</h2><p>當 WEB Application 執行檔完成之後，便能執行</p>
 <figure class="highlight bash hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ uvicorn main:app --reload</span><br></pre></td></tr></tbody></table></figure>
 
@@ -231,6 +239,19 @@
 </blockquote>
 </blockquote>
 <p>此時前往 <a target="_blank" rel="noopener" href="http://127.0.0.1:8000/docs">http://127.0.0.1:8000/docs</a> 便能看到所產生的 Open API 文件(Swagger)，而 API 文件本身可以進行互動操作，所以未來開發的任何一支 API 如果想要進行手動測試，便可以直接在上面操作</p>
+<ul>
+<li><p>前往 <a target="_blank" rel="noopener" href="http://127.0.0.1:8000/docs">http://127.0.0.1:8000/docs</a></p>
+<p>  每一隻 API都會以長條方塊來呈現，可以看到方塊上提供的資訊 <code>default</code> 指的是 API 的 Tag 類別；<code>GET</code> 是 HTTP Method；<code>/</code> 就是該 API router<br>  <img src="/images/fastapi/fastapi-ch1-1.PNG"></p>
+</li>
+</ul>
+<ul>
+<li><p>點擊藍色長條方塊，展開 API 細節資訊</p>
+<p>  可以看到中間有 <code>Parameters</code> 和 <code>Responses</code>，分別代表這隻 API 的 parameter 輸入位置 e.g Query parameter、Path parameter，和預期 API 回應的狀態碼以及資料內容。<br>  另外右上角有個 <strong>Try it out</strong>按鈕，點擊之後，可以讓我們開始手動操作這隻 API<br>  <img src="/images/fastapi/fastapi-ch1-2.PNG"></p>
+</li>
+<li><p>點擊 Try it out，開始手動操作執行 API</p>
+<p>  附圖是已經點擊 <strong>Execute</strong>按鈕之後的畫面，可以從 Response body 那邊看到 API 回應的資料內容。另外如果 API 有設定 Query parameter、Path paramter or Request body 都可以使用<strong>Clear</strong>按鈕來清除輸入內容<br>  <img src="/images/fastapi/fastapi-ch1-3.PNG"></p>
+</li>
+</ul>
 <p>現在應該大概了解 FastAPI 的使用流程，下一個章節則會介紹如果要實現一個讀取資料的 RESTful API，該知道哪些設定以及定義呢?</p>
 <h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p>此篇內容參考以下:</p>
 <ul>
